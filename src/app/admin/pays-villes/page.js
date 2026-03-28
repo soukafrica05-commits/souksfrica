@@ -17,62 +17,12 @@ export default function AdminPaysVilles() {
   const [modeFormulaireVille, setModeFormulaireVille] = useState(false);
   const [villeEnCours, setVilleEnCours] = useState(null);
   
-  const [formDataPays, setFormDataPays] = useState({
-    nom: '',
-    devise: 'XOF'
-  });
-  
+  const [formDataPays, setFormDataPays] = useState({ nom: '' });
+
   const [formDataVille, setFormDataVille] = useState({
     nom: '',
     pays_id: ''
   });
-
-  // Liste complète des devises africaines
-  const devisesAfricaines = [
-    { code: 'XOF', nom: 'Franc CFA BCEAO (Afrique de l\'Ouest)', pays: 'Bénin, Burkina Faso, Côte d\'Ivoire, Guinée-Bissau, Mali, Niger, Sénégal, Togo' },
-    { code: 'XAF', nom: 'Franc CFA BEAC (Afrique Centrale)', pays: 'Cameroun, Congo, Gabon, Guinée équatoriale, RCA, Tchad' },
-    { code: 'MAD', nom: 'Dirham marocain', pays: 'Maroc' },
-    { code: 'DZD', nom: 'Dinar algérien', pays: 'Algérie' },
-    { code: 'TND', nom: 'Dinar tunisien', pays: 'Tunisie' },
-    { code: 'EGP', nom: 'Livre égyptienne', pays: 'Égypte' },
-    { code: 'ZAR', nom: 'Rand sud-africain', pays: 'Afrique du Sud' },
-    { code: 'NGN', nom: 'Naira nigérian', pays: 'Nigeria' },
-    { code: 'GHS', nom: 'Cedi ghanéen', pays: 'Ghana' },
-    { code: 'KES', nom: 'Shilling kényan', pays: 'Kenya' },
-    { code: 'TZS', nom: 'Shilling tanzanien', pays: 'Tanzanie' },
-    { code: 'UGX', nom: 'Shilling ougandais', pays: 'Ouganda' },
-    { code: 'ETB', nom: 'Birr éthiopien', pays: 'Éthiopie' },
-    { code: 'MUR', nom: 'Roupie mauricienne', pays: 'Maurice' },
-    { code: 'SCR', nom: 'Roupie seychelloise', pays: 'Seychelles' },
-    { code: 'MGA', nom: 'Ariary malgache', pays: 'Madagascar' },
-    { code: 'ZMW', nom: 'Kwacha zambien', pays: 'Zambie' },
-    { code: 'BWP', nom: 'Pula botswanais', pays: 'Botswana' },
-    { code: 'NAD', nom: 'Dollar namibien', pays: 'Namibie' },
-    { code: 'MZN', nom: 'Metical mozambicain', pays: 'Mozambique' },
-    { code: 'AOA', nom: 'Kwanza angolais', pays: 'Angola' },
-    { code: 'CDF', nom: 'Franc congolais', pays: 'RD Congo' },
-    { code: 'RWF', nom: 'Franc rwandais', pays: 'Rwanda' },
-    { code: 'BIF', nom: 'Franc burundais', pays: 'Burundi' },
-    { code: 'GNF', nom: 'Franc guinéen', pays: 'Guinée' },
-    { code: 'LRD', nom: 'Dollar libérien', pays: 'Libéria' },
-    { code: 'SLL', nom: 'Leone sierra-léonais', pays: 'Sierra Leone' },
-    { code: 'GMD', nom: 'Dalasi gambien', pays: 'Gambie' },
-    { code: 'CVE', nom: 'Escudo cap-verdien', pays: 'Cap-Vert' },
-    { code: 'MRU', nom: 'Ouguiya mauritanien', pays: 'Mauritanie' },
-    { code: 'LYD', nom: 'Dinar libyen', pays: 'Libye' },
-    { code: 'SDG', nom: 'Livre soudanaise', pays: 'Soudan' },
-    { code: 'SSP', nom: 'Livre sud-soudanaise', pays: 'Soudan du Sud' },
-    { code: 'ERN', nom: 'Nakfa érythréen', pays: 'Érythrée' },
-    { code: 'DJF', nom: 'Franc djiboutien', pays: 'Djibouti' },
-    { code: 'SOS', nom: 'Shilling somalien', pays: 'Somalie' },
-    { code: 'KMF', nom: 'Franc comorien', pays: 'Comores' },
-    { code: 'SZL', nom: 'Lilangeni swazi', pays: 'Eswatini' },
-    { code: 'LSL', nom: 'Loti lesothan', pays: 'Lesotho' },
-    { code: 'MWK', nom: 'Kwacha malawite', pays: 'Malawi' },
-    { code: 'STN', nom: 'Dobra santoméen', pays: 'Sao Tomé-et-Principe' },
-    { code: 'USD', nom: 'Dollar américain', pays: 'Zimbabwe (usage courant)' },
-    { code: 'EUR', nom: 'Euro', pays: 'Mayotte, Réunion' }
-  ];
 
   useEffect(() => {
     chargerPays();
@@ -110,24 +60,24 @@ export default function AdminPaysVilles() {
   const ouvrirFormulaireAjoutPays = () => {
     setModeFormulairePays('ajout');
     setPaysEnCours(null);
-    setFormDataPays({ nom: '', devise: 'XOF' });
+    setFormDataPays({ nom: '' });
   };
 
   const ouvrirFormulaireEditionPays = (p) => {
     setModeFormulairePays('edition');
     setPaysEnCours(p);
-    setFormDataPays({ nom: p.nom, devise: p.devise });
+    setFormDataPays({ nom: p.nom });
   };
 
   const fermerFormulairePays = () => {
     setModeFormulairePays(false);
     setPaysEnCours(null);
-    setFormDataPays({ nom: '', devise: 'XOF' });
+    setFormDataPays({ nom: '' });
   };
 
   const sauvegarderPays = async () => {
     if (!formDataPays.nom.trim()) {
-      alert('⚠️ Veuillez entrer un nom de pays');
+      alert('⚠️ Veuillez entrer un nom de région');
       return;
     }
 
@@ -136,8 +86,8 @@ export default function AdminPaysVilles() {
         await paysAPI.update(paysEnCours.id, formDataPays);
         alert('✅ Pays modifié avec succès !');
       } else {
-        await paysAPI.create(formDataPays);
-        alert(`✅ Pays "${formDataPays.nom}" ajouté avec succès !`);
+        await paysAPI.create({ ...formDataPays, devise: 'MAD' });
+        alert(`✅ Région "${formDataPays.nom}" ajoutée avec succès !`);
       }
       
       fermerFormulairePays();
@@ -248,7 +198,7 @@ export default function AdminPaysVilles() {
               : 'border-transparent text-gray-500 hover:text-gray-700'
           }`}
         >
-          🌍 Pays ({pays.length})
+          🗺️ Régions ({pays.length})
         </button>
         <button
           onClick={() => setOngletActif('villes')}
@@ -271,7 +221,7 @@ export default function AdminPaysVilles() {
               onClick={() => modeFormulairePays ? fermerFormulairePays() : ouvrirFormulaireAjoutPays()}
               className="btn-primary"
             >
-              {modeFormulairePays ? '❌ Annuler' : '➕ Ajouter un pays'}
+              {modeFormulairePays ? '❌ Annuler' : '➕ Ajouter une région'}
             </button>
           </div>
 
@@ -279,33 +229,17 @@ export default function AdminPaysVilles() {
           {modeFormulairePays && (
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4">
-                {modeFormulairePays === 'edition' ? '✏️ Modifier le pays' : '➕ Ajouter un pays'}
+                {modeFormulairePays === 'edition' ? '✏️ Modifier la région' : '➕ Ajouter une région'}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom du pays *</label>
-                  <input
-                    type="text"
-                    placeholder="Ex: Nigéria"
-                    className="input-field"
-                    value={formDataPays.nom}
-                    onChange={(e) => setFormDataPays({...formDataPays, nom: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Devise *</label>
-                  <select
-                    className="input-field"
-                    value={formDataPays.devise}
-                    onChange={(e) => setFormDataPays({...formDataPays, devise: e.target.value})}
-                  >
-                    {devisesAfricaines.map(d => (
-                      <option key={d.code} value={d.code}>
-                        {d.code} - {d.nom}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la région *</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Casablanca-Settat"
+                  className="input-field"
+                  value={formDataPays.nom}
+                  onChange={(e) => setFormDataPays({...formDataPays, nom: e.target.value})}
+                />
               </div>
               <div className="flex gap-3 mt-4">
                 <button onClick={sauvegarderPays} className="btn-primary">
@@ -318,10 +252,10 @@ export default function AdminPaysVilles() {
             </div>
           )}
 
-          {/* Liste des pays */}
+          {/* Liste des régions */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="px-6 py-4 bg-gray-50 border-b">
-              <h3 className="text-lg font-bold text-gray-800">Liste des pays</h3>
+              <h3 className="text-lg font-bold text-gray-800">Liste des régions</h3>
             </div>
             <div className="divide-y divide-gray-200">
               {pays.map((p) => (
@@ -332,7 +266,8 @@ export default function AdminPaysVilles() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">{p.nom}</p>
-                      <p className="text-sm text-gray-500">Devise: {p.devise}</p>
+                      <p className="text-xs text-gray-400">MAD</p>
+<p className="text-sm text-gray-500"></p>
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -361,7 +296,7 @@ export default function AdminPaysVilles() {
         <div className="space-y-6">
           {/* Sélection pays */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Gérer les villes d'un pays</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Gérer les villes d'une région</h3>
             <select
               className="input-field"
               value={paysSelectionne}
@@ -370,7 +305,7 @@ export default function AdminPaysVilles() {
                 setModeFormulaireVille(false);
               }}
             >
-              <option value="">Sélectionner un pays</option>
+              <option value="">Sélectionner une région</option>
               {pays.map(p => (
                 <option key={p.id} value={p.id}>{p.nom}</option>
               ))}
@@ -486,7 +421,7 @@ export default function AdminPaysVilles() {
           </li>
           <li className="flex items-start gap-2">
             <span>💱</span>
-            <span>La liste inclut toutes les devises officielles des pays africains</span>
+            <span>Devise fixe : MAD (Dirham marocain)</span>
           </li>
         </ul>
       </div>

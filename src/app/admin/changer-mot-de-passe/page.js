@@ -68,7 +68,7 @@ export default function ChangerMotDePasse() {
 
       // Vérifier l'ancien mot de passe
       const { data: adminData, error: adminError } = await supabase
-        .from('admins')
+        .from('comptes')
         .select('mot_de_passe')
         .eq('id', admin.id)
         .single();
@@ -93,7 +93,7 @@ export default function ChangerMotDePasse() {
       // ⚠️ EN PRODUCTION: Hash avec bcrypt avant d'enregistrer
       // const hashedPassword = await bcrypt.hash(formData.nouveauMdp, 10);
       const { error: updateError } = await supabase
-        .from('admins')
+        .from('comptes')
         .update({
           mot_de_passe: formData.nouveauMdp,
           doit_changer_mdp: false

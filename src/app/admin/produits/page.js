@@ -450,7 +450,7 @@ export default function AdminProduits() {
               )}
 
               <div className="flex items-center justify-between mb-3">
-                <p className="text-xl font-bold text-accent">{produit.prix?.toLocaleString()} {produit.pays?.devise}</p>
+                <p className="text-xl font-bold text-accent">{produit.prix?.toLocaleString()} {'MAD'}</p>
                 <span className="text-sm text-gray-500">Stock: {produit.stock}</span>
               </div>
 

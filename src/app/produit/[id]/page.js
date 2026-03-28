@@ -8,11 +8,11 @@ import { usePanier } from '@/hooks/usePanier'; // ✅ IMPORT HOOK
 import PanierFlottant from '@/components/PanierFlottant'; // ✅ IMPORT COMPOSANT
 import { supabase } from '@/lib/supabase'; // ✅ POUR ENREGISTRER COMMANDES
 import PageTracker from '@/components/PageTracker';
-import { useCurrencyConverter } from '@/hooks/useCurrencyConverter';
+
 
 export default function ProduitDetail() {
   const params = useParams();
-  const { userCurrency, convertPrice } = useCurrencyConverter();   // ✅ HOOK
+  const userCurrency = 'MAD';
   const router = useRouter();
   const { ajouterAuPanier } = usePanier(); // ✅ HOOK
   
@@ -192,9 +192,9 @@ export default function ProduitDetail() {
       message += `📏 *${typeAffichage}:* ${variation.valeur}\n`;
     });
     
-    message += `💰 *Prix unitaire:* ${produit.prix} ${produit.pays?.devise || 'FCFA'}\n`;
+    message += `💰 *Prix unitaire:* ${produit.prix} ${userCurrency}\n`;
     message += `📊 *Quantité:* ${quantite}\n`;
-    message += `💵 *Total:* ${produit.prix * quantite} ${produit.pays?.devise || 'FCFA'}\n\n`;
+    message += `💵 *Total:* ${produit.prix * quantite} ${userCurrency}\n\n`;
     message += `📍 Depuis: Chez Mon Ami - Boutique en ligne`;
     
     // ✅ ENREGISTRER DANS BDD
@@ -236,11 +236,11 @@ ${formulaireCommande.adresseLivraison}
 PRODUIT COMMANDÉ:
 -----------------
 Produit: ${produit.nom}
-${variationsTexte}Prix unitaire: ${produit.prix} ${produit.pays?.devise || 'FCFA'}
+${variationsTexte}Prix unitaire: ${produit.prix} ${userCurrency}
 Quantité: ${quantite}
 
 ================================
-TOTAL: ${produit.prix * quantite} ${produit.pays?.devise || 'FCFA'}
+TOTAL: ${produit.prix * quantite} ${userCurrency}
 ================================
 `;
 
@@ -368,7 +368,7 @@ TOTAL: ${produit.prix * quantite} ${produit.pays?.devise || 'FCFA'}
               
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-4xl font-bold text-accent">
-                  {convertPrice(produit.prix, produit.pays?.devise).toLocaleString()} {userCurrency}
+                  {(parseFloat(produit.prix) || 0).toLocaleString()} {userCurrency}
                 </span>
               </div>
 
@@ -500,7 +500,7 @@ TOTAL: ${produit.prix * quantite} ${produit.pays?.devise || 'FCFA'}
                       {p.nom}
                     </h3>
                     <p className="text-accent font-bold text-lg">
-                      {convertPrice(p.prix, p.pays?.devise).toLocaleString()} {userCurrency}
+                      {(parseFloat(p.prix) || 0).toLocaleString()} {userCurrency}
                     </p>
                   </div>
                 </Link>
@@ -551,7 +551,7 @@ TOTAL: ${produit.prix * quantite} ${produit.pays?.devise || 'FCFA'}
                 </div>
                 <div className="border-t mt-2 pt-2 flex justify-between font-bold text-accent">
                   <span>TOTAL</span>
-                  <span>{totalCommande} {produit.pays?.devise || 'FCFA'}</span>
+                  <span>{totalCommande} {userCurrency}</span>
                 </div>
               </div>
 

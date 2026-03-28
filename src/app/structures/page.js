@@ -17,15 +17,14 @@ function StructuresContent() {
   const [structures, setStructures] = useState([]);
   const [structuresFeatured, setStructuresFeatured] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [pays, setPays] = useState([]);
+  const [regions, setRegions] = useState([]);
   const [villes, setVilles] = useState([]);
-  
+
   const [categorieFiltre, setCategorieFiltre] = useState('tous');
-  const [paysFiltre, setPaysFiltre] = useState('');
+  const [regionFiltre, setRegionFiltre] = useState('');
   const [villeFiltre, setVilleFiltre] = useState('');
   const [recherche, setRecherche] = useState('');
   const [pageActuelle, setPageActuelle] = useState(1);
-  const [showModalPays, setShowModalPays] = useState(false);
   const [villesDisponibles, setVillesDisponibles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [groupeActif, setGroupeActif] = useState(null);
@@ -78,13 +77,13 @@ function StructuresContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (paysFiltre) {
-      chargerVillesDuPays(paysFiltre);
+    if (regionFiltre) {
+      chargerVillesDuPays(regionFiltre);
     } else {
       setVillesDisponibles([]);
       setVilleFiltre('');
     }
-  }, [paysFiltre]);
+  }, [regionFiltre]);
 
   const chargerStructuresFeatured = async () => {
   try {
@@ -134,7 +133,7 @@ function StructuresContent() {
       const [
         structuresData,
         categoriesData,
-        paysData
+        regionsData
       ] = await Promise.all([
         structuresAPI.getAll(),
         categoriesAPI.getAll(),
@@ -144,7 +143,7 @@ function StructuresContent() {
 
       setStructures(structuresData);
       setCategories(categoriesData);
-      setPays(paysData);
+      setRegions(regionsData);
 
     } catch (error) {
       console.error('Erreur chargement données:', error);
@@ -162,18 +161,10 @@ function StructuresContent() {
     }
   };
 
-  const choisirPays = (paysId) => {
-    setPaysFiltre(paysId);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('paysPreference', paysId);
-    }
-    setShowModalPays(false);
-  };
-
   const structuresFiltrees = structures.filter(s => {
     const matchCategorie = categorieFiltre === 'tous' || s.categorie_id === categorieFiltre;
     const matchGroupe = !groupeActif || groupeActif.includes(s.categorie_id);
-    const matchPays = !paysFiltre || paysFiltre === '' || s.pays_id === paysFiltre;
+    const matchPays = !regionFiltre || regionFiltre === '' || s.pays_id === regionFiltre;
     const matchVille = !villeFiltre || s.ville_id === villeFiltre;
     const matchRecherche = !recherche ||
       s.nom.toLowerCase().includes(recherche.toLowerCase()) ||
@@ -189,7 +180,7 @@ function StructuresContent() {
 
   useEffect(() => {
     setPageActuelle(1);
-  }, [categorieFiltre, paysFiltre, villeFiltre, recherche, groupeActif]);
+  }, [categorieFiltre, regionFiltre, villeFiltre, recherche, groupeActif]);
 
   const scrollCategories = (direction) => {
     if (categoriesScrollRef.current) {
@@ -203,7 +194,7 @@ function StructuresContent() {
 
   const reinitialiserFiltres = () => {
     setCategorieFiltre('tous');
-    setPaysFiltre('');
+    setRegionFiltre('');
     setVilleFiltre('');
     setRecherche('');
     setGroupeActif(null);
@@ -232,49 +223,6 @@ function StructuresContent() {
       {/* ✅ TRACKING AUTOMATIQUE */}
       <PageTracker pageType="listing_structures" />
     <div className="min-h-screen bg-gray-50">
-      {/* Modal choix pays */}
-      {showModalPays && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">🌍</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                Bienvenue sur Chez Mon Ami !
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Choisissez votre pays pour voir les entreprises près de chez vous
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {pays.map(p => {
-                const nbStructures = structures.filter(s => s.pays_id === p.id).length;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => choisirPays(p.id)}
-                    className="flex items-center gap-4 p-4 rounded-xl border-2 border-gray-200 hover:border-primary hover:bg-primary/5 transition-all"
-                  >
-                    <span className="text-4xl">{p.drapeau || '🏳️'}</span>
-                    <div className="text-left flex-1">
-                      <p className="font-bold text-gray-800">{p.nom}</p>
-                      <p className="text-sm text-gray-500">{nbStructures} structure{nbStructures > 1 ? 's' : ''}</p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={() => setShowModalPays(false)}
-              className="w-full py-3 text-gray-600 hover:text-gray-800 font-medium"
-            >
-              Fermer
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Header avec couleur */}
       <div className="bg-gradient-to-r from-primary via-primary-dark to-primary-light text-white py-12">
         <div className="container mx-auto px-4">
@@ -305,15 +253,13 @@ function StructuresContent() {
             </div>
 
             <select
-              value={paysFiltre}
-              onChange={(e) => setPaysFiltre(e.target.value)}
+              value={regionFiltre}
+              onChange={(e) => setRegionFiltre(e.target.value)}
               className="input-field"
             >
-              <option value="">Tous les pays</option>
-              {pays.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.drapeau} {p.nom}
-                </option>
+              <option value="">Toutes les régions</option>
+              {regions.map(r => (
+                <option key={r.id} value={r.id}>{r.nom}</option>
               ))}
             </select>
 
@@ -321,7 +267,7 @@ function StructuresContent() {
               value={villeFiltre}
               onChange={(e) => setVilleFiltre(e.target.value)}
               className="input-field"
-              disabled={!paysFiltre}
+              disabled={!regionFiltre}
             >
               <option value="">Toutes les villes</option>
               {villesDisponibles.map(v => (
@@ -332,17 +278,8 @@ function StructuresContent() {
             </select>
           </div>
 
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              onClick={() => setShowModalPays(true)}
-              className="flex items-center gap-2 text-primary hover:text-primary-dark font-medium transition"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Changer de pays
-            </button>
-            {(categorieFiltre !== 'tous' || paysFiltre || villeFiltre || recherche || groupeActif) && (
+          <div className="mt-4 flex items-center justify-end">
+            {(categorieFiltre !== 'tous' || regionFiltre || villeFiltre || recherche || groupeActif) && (
               <button
                 onClick={reinitialiserFiltres}
                 className="btn-secondary text-sm"
@@ -495,7 +432,7 @@ function StructuresContent() {
 
                         <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
                           <span>📍</span>
-                          <span>{structure.ville?.nom}, {structure.pays?.nom}</span>
+                          <span>{structure.ville?.nom}{structure.pays?.nom ? `, ${structure.pays.nom}` : ''}</span>
                         </div>
 
                         <div className="pt-3 border-t border-gray-100">
@@ -561,7 +498,7 @@ function StructuresContent() {
                       
                       <p className="text-gray-600 flex items-center gap-2 mb-3">
                         <span>📍</span>
-                        <span className="font-medium text-xs">{structure.ville?.nom}, {structure.pays?.nom}</span>
+                        <span className="font-medium text-xs">{structure.ville?.nom}{structure.pays?.nom ? `, ${structure.pays.nom}` : ''}</span>
                       </p>
                       
                       <p className="text-sm text-gray-600 mb-4 line-clamp-2">

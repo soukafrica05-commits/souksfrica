@@ -271,7 +271,7 @@ export default function MesCommandesPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-2xl font-bold text-accent">
-                            {commande.montant_total.toLocaleString()} {commande.devise}
+                            {commande.montant_total.toLocaleString()} {'MAD'}
                           </p>
                           <p className="text-sm text-gray-600">
                             {commande.produits?.length || 0} article{commande.produits?.length > 1 ? 's' : ''}
@@ -368,7 +368,7 @@ export default function MesCommandesPage() {
                   <div className="text-right">
                     <p className="text-sm text-gray-600">Total</p>
                     <p className="text-3xl font-bold text-accent">
-                      {commandeSelectionnee.montant_total.toLocaleString()} {commandeSelectionnee.devise}
+                      {commandeSelectionnee.montant_total.toLocaleString()} {'MAD'}
                     </p>
                   </div>
                 </div>
@@ -390,11 +390,11 @@ export default function MesCommandesPage() {
                       <div className="flex-1">
                         <p className="font-semibold">{produit.nom}</p>
                         <p className="text-sm text-gray-600">
-                          Quantité: {produit.quantite} × {produit.prix} {commandeSelectionnee.devise}
+                          Quantité: {produit.quantite} × {produit.prix} {'MAD'}
                         </p>
                       </div>
                       <p className="font-bold text-accent">
-                        {(produit.prix * produit.quantite).toLocaleString()} {commandeSelectionnee.devise}
+                        {(produit.prix * produit.quantite).toLocaleString()} {'MAD'}
                       </p>
                     </div>
                   ))}

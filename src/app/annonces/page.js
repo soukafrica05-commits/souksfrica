@@ -149,7 +149,7 @@ export default function AnnoncesPage() {
                   value={paysFiltre}
                   onChange={(e) => handlePaysChange(e.target.value)}
                 >
-                  <option value="">Tous les pays</option>
+                  <option value="">Toutes les régions</option>
                   {pays.map(p => (
                     <option key={p.id} value={p.id}>{p.nom}</option>
                   ))}

@@ -311,11 +311,11 @@ export default function AdminCommandes() {
                     <div className="flex-1">
                       <p className="font-semibold">{produit.nom}</p>
                       <p className="text-sm text-gray-600">
-                        Quantité: {produit.quantite} × {produit.prix} {commandeSelectionnee.devise}
+                        Quantité: {produit.quantite} × {produit.prix} {'MAD'}
                       </p>
                     </div>
                     <p className="font-bold text-accent">
-                      {(produit.prix * produit.quantite).toLocaleString()} {commandeSelectionnee.devise}
+                      {(produit.prix * produit.quantite).toLocaleString()} {'MAD'}
                     </p>
                   </div>
                 ))}
@@ -323,7 +323,7 @@ export default function AdminCommandes() {
                   <div className="flex items-center justify-between text-lg font-bold">
                     <span>Total</span>
                     <span className="text-accent">
-                      {commandeSelectionnee.montant_total.toLocaleString()} {commandeSelectionnee.devise}
+                      {commandeSelectionnee.montant_total.toLocaleString()} {'MAD'}
                     </span>
                   </div>
                 </div>
@@ -533,7 +533,7 @@ export default function AdminCommandes() {
                     <p className="text-sm">{commande.produits?.length || 0} article{commande.produits?.length > 1 ? 's' : ''}</p>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="font-bold text-accent">{commande.montant_total.toLocaleString()} {commande.devise}</p>
+                    <p className="font-bold text-accent">{commande.montant_total.toLocaleString()} {'MAD'}</p>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${STATUTS[commande.statut].couleur}`}>

@@ -7,27 +7,24 @@ import { supabase } from '@/lib/supabase';
 import { usePanier } from '@/hooks/usePanier';
 import PanierFlottant from '@/components/PanierFlottant';
 import PageTracker from '@/components/PageTracker';
-import { useCurrencyConverter } from '@/hooks/useCurrencyConverter';
 
 const PRODUITS_PAR_PAGE = 20;
 const CATEGORIES_VISIBLES = 5;
 
 export default function BoutiquePage() {
-  const { ajouterAuPanier } = usePanier(); // ✅ LE HOOK
-  const { userCurrency, convertPrice } = useCurrencyConverter();    // ✅ LE HOOK
-  
+  const { ajouterAuPanier } = usePanier();
+
   const [produits, setProduits] = useState([]);
   const [produitsPromo, setProduitsPromo] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [pays, setPays] = useState([]);
+  const [regions, setRegions] = useState([]);
   const [villesDisponibles, setVillesDisponibles] = useState([]);
-  
-  const [paysFiltre, setPaysFiltre] = useState('');
+
+  const [regionFiltre, setRegionFiltre] = useState('');
   const [villeFiltre, setVilleFiltre] = useState('');
   const [categorieFiltre, setCategorieFiltre] = useState('toutes');
   const [recherche, setRecherche] = useState('');
   const [pageActuelle, setPageActuelle] = useState(1);
-  const [showModalPays, setShowModalPays] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const categoriesScrollRef = useRef(null);
@@ -37,13 +34,13 @@ export default function BoutiquePage() {
   }, []);
 
   useEffect(() => {
-    if (paysFiltre) {
-      chargerVillesDuPays(paysFiltre);
+    if (regionFiltre) {
+      chargerVillesDuPays(regionFiltre);
     } else {
       setVillesDisponibles([]);
       setVilleFiltre('');
     }
-  }, [paysFiltre]);
+  }, [regionFiltre]);
 
   const chargerProduitsPromo = async () => {
     try {
@@ -54,7 +51,7 @@ export default function BoutiquePage() {
           *,
           produits (
             id, nom, images, prix,
-            pays:pays(devise, nom),
+            region:pays(nom),
             ville:villes(nom)
           )
         `)
@@ -92,7 +89,7 @@ export default function BoutiquePage() {
 
       setProduits(produitsTriés);
       setCategories(categoriesData);
-      setPays(paysData);
+      setRegions(paysData);
     } catch (error) {
       console.error('Erreur chargement données:', error);
     } finally {
@@ -109,18 +106,8 @@ export default function BoutiquePage() {
     }
   };
 
-  const choisirPays = (paysId) => {
-    setPaysFiltre(paysId);
-    setShowModalPays(false);
-  };
-
-  const choisirTousLesPays = () => {
-    setPaysFiltre('');
-    setShowModalPays(false);
-  };
-
   const produitsFiltres = produits.filter(p => {
-    const matchPays = !paysFiltre || paysFiltre === '' || p.pays_id === paysFiltre;
+    const matchPays = !regionFiltre || regionFiltre === '' || p.pays_id === regionFiltre;
     const matchVille = !villeFiltre || p.ville_id === villeFiltre;
     const matchCategorie = categorieFiltre === 'toutes' || p.categorie === categorieFiltre;
     const matchRecherche = !recherche ||
@@ -137,7 +124,7 @@ export default function BoutiquePage() {
 
   useEffect(() => {
     setPageActuelle(1);
-  }, [categorieFiltre, paysFiltre, villeFiltre, recherche]);
+  }, [categorieFiltre, regionFiltre, villeFiltre, recherche]);
 
   const scrollCategories = (direction) => {
     if (categoriesScrollRef.current) {
@@ -165,52 +152,11 @@ export default function BoutiquePage() {
       {/* ✅ TRACKING AVEC ID PRODUIT */}
       <PageTracker pageType="boutique" />
     <div className="min-h-screen bg-gray-50">
-      {/* Modal sélection pays */}
-      {showModalPays && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">🛍️</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">Bienvenue à la Boutique !</h2>
-              <p className="text-gray-600 text-lg">Choisissez votre pays pour voir les produits disponibles</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {pays.map(p => {
-                const nbProduits = produits.filter(prod => prod.pays_id === p.id).length;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => choisirPays(p.id)}
-                    className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl hover:border-accent hover:bg-accent/5 transition group"
-                  >
-                    <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-2xl group-hover:bg-accent/20 transition">
-                      🛒
-                    </div>
-                    <div className="text-left flex-1">
-                      <p className="font-bold text-gray-800 text-lg">{p.nom}</p>
-                      <p className="text-sm text-gray-500">{nbProduits} produit{nbProduits > 1 ? 's' : ''}</p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={choisirTousLesPays}
-              className="mt-6 w-full py-3 text-gray-600 hover:text-gray-800 font-medium border-2 border-gray-200 rounded-lg hover:border-accent transition"
-            >
-              Voir tous les produits (tous les pays)
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Header */}
       <div className="bg-gradient-to-r from-primary via-primary-dark to-primary-light text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-3">🛍️ Boutique en Ligne</h1>
-          <p className="text-xl text-orange-100">{produits.length} produits disponibles à travers l'Afrique</p>
+          <p className="text-xl text-orange-100">{produits.length} produits disponibles au Maroc</p>
         </div>
       </div>
 
@@ -237,15 +183,15 @@ export default function BoutiquePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">🌍 Pays</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">🗺️ Région</label>
               <select
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-accent focus:outline-none font-medium"
-                value={paysFiltre}
-                onChange={(e) => setPaysFiltre(e.target.value)}
+                value={regionFiltre}
+                onChange={(e) => setRegionFiltre(e.target.value)}
               >
-                <option value="">Tous les pays</option>
-                {pays.map(p => (
-                  <option key={p.id} value={p.id}>{p.nom}</option>
+                <option value="">Toutes les régions</option>
+                {regions.map(r => (
+                  <option key={r.id} value={r.id}>{r.nom}</option>
                 ))}
               </select>
             </div>
@@ -256,7 +202,7 @@ export default function BoutiquePage() {
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-accent focus:outline-none font-medium"
                 value={villeFiltre}
                 onChange={(e) => setVilleFiltre(e.target.value)}
-                disabled={!paysFiltre}
+                disabled={!regionFiltre}
               >
                 <option value="">Toutes les villes</option>
                 {villesDisponibles.map(v => (
@@ -266,16 +212,7 @@ export default function BoutiquePage() {
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              onClick={() => setShowModalPays(true)}
-              className="flex items-center gap-2 text-accent hover:text-orange-600 font-medium transition"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Changer de pays
-            </button>
+          <div className="mt-4 flex justify-end">
             <p className="text-sm text-gray-600">
               <span className="font-semibold text-accent">{produitsFiltres.length}</span> produit{produitsFiltres.length > 1 ? 's' : ''}
             </p>
@@ -352,7 +289,7 @@ export default function BoutiquePage() {
                           <div className="mb-3">
                             <div className="flex items-baseline gap-2 mb-1">
                               <span className="text-2xl font-bold text-red-600">
-                                {convertPrice(Math.round(promo.prix_promo), produit.pays?.devise).toLocaleString()} {userCurrency}
+                                {Math.round(promo.prix_promo).toLocaleString()} MAD
                               </span>
                               <span className="text-sm text-gray-500 line-through">
                                 {Math.round(promo.prix_original).toLocaleString()}
@@ -411,7 +348,7 @@ export default function BoutiquePage() {
                     <div className="p-4">
                       <h3 className="font-bold text-gray-800 mb-2 line-clamp-2 min-h-[3rem]">{produit.nom}</h3>
                       <p className="text-2xl font-bold text-accent mb-3">
-                        {convertPrice(produit.prix, produit.pays?.devise).toLocaleString()} {userCurrency}
+                        {(parseFloat(produit.prix) || 0).toLocaleString()} MAD
                       </p>
                     </div>
                   </Link>

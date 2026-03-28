@@ -1,31 +1,23 @@
-// hooks/usePanier.js - VERSION CORRIGÉE AVEC RÉACTIVITÉ
+// hooks/usePanier.js - Version Maroc (MAD fixe)
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-import { useCurrencyConverter } from './useCurrencyConverter';
 
 const PANIER_STORAGE_KEY = 'chezmonami_panier';
-
-// Event pour synchroniser entre composants
 const PANIER_CHANGED_EVENT = 'panier-changed';
 
 export function usePanier() {
-  const { userCurrency, convertPrice } = useCurrencyConverter();
   const [panier, setPanier] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Charger le panier depuis localStorage au montage
   const chargerPanier = useCallback(() => {
     try {
       const panierSauvegarde = localStorage.getItem(PANIER_STORAGE_KEY);
       if (panierSauvegarde) {
-        const panierParse = JSON.parse(panierSauvegarde);
-        setPanier(panierParse);
-        console.log('📦 Panier chargé:', panierParse.length, 'articles');
+        setPanier(JSON.parse(panierSauvegarde));
       } else {
         setPanier([]);
       }
     } catch (error) {
-      console.error('❌ Erreur chargement panier:', error);
       setPanier([]);
     }
   }, []);
@@ -35,47 +27,28 @@ export function usePanier() {
     setIsLoaded(true);
   }, [chargerPanier]);
 
-  // Écouter les changements du panier depuis d'autres composants
   useEffect(() => {
-    const handlePanierChanged = () => {
-      console.log('🔄 Panier changé - rechargement...');
-      chargerPanier();
-    };
-
+    const handlePanierChanged = () => chargerPanier();
     window.addEventListener(PANIER_CHANGED_EVENT, handlePanierChanged);
-    
-    // Écouter aussi les changements de storage (pour sync entre onglets)
     window.addEventListener('storage', (e) => {
-      if (e.key === PANIER_STORAGE_KEY) {
-        chargerPanier();
-      }
+      if (e.key === PANIER_STORAGE_KEY) chargerPanier();
     });
-
-    return () => {
-      window.removeEventListener(PANIER_CHANGED_EVENT, handlePanierChanged);
-    };
+    return () => window.removeEventListener(PANIER_CHANGED_EVENT, handlePanierChanged);
   }, [chargerPanier]);
 
-  // Sauvegarder dans localStorage et notifier les autres composants
   const sauvegarderPanier = useCallback((nouveauPanier) => {
     try {
       localStorage.setItem(PANIER_STORAGE_KEY, JSON.stringify(nouveauPanier));
       setPanier(nouveauPanier);
-      
-      // Notifier tous les composants du changement
       window.dispatchEvent(new Event(PANIER_CHANGED_EVENT));
-      
-      console.log('💾 Panier sauvegardé:', nouveauPanier.length, 'articles');
     } catch (error) {
-      console.error('❌ Erreur sauvegarde panier:', error);
+      console.error('Erreur sauvegarde panier:', error);
     }
   }, []);
 
   const ajouterAuPanier = useCallback((produit) => {
     const panierActuel = JSON.parse(localStorage.getItem(PANIER_STORAGE_KEY) || '[]');
-    
     const index = panierActuel.findIndex(item => item.id === produit.id);
-    
     let nouveauPanier;
     if (index !== -1) {
       nouveauPanier = [...panierActuel];
@@ -84,63 +57,38 @@ export function usePanier() {
         quantite: (nouveauPanier[index].quantite || 1) + (produit.quantite || 1)
       };
     } else {
-      // IMPORTANT : Sauvegarder avec la devise complète
-      nouveauPanier = [...panierActuel, { 
-        ...produit, 
-        quantite: produit.quantite || 1,
-        devise_origine: produit.pays?.devise || 'XOF' // ← AJOUT
-      }];
+      nouveauPanier = [...panierActuel, { ...produit, quantite: produit.quantite || 1 }];
     }
-    
     sauvegarderPanier(nouveauPanier);
-    
     window.dispatchEvent(new CustomEvent('produit-ajoute-panier', {
       detail: { produit: produit.nom }
     }));
-    
-    console.log('✅ Produit ajouté:', produit.nom, 'Devise:', produit.pays?.devise);
   }, [sauvegarderPanier]);
 
   const retirerDuPanier = useCallback((index) => {
     const panierActuel = JSON.parse(localStorage.getItem(PANIER_STORAGE_KEY) || '[]');
-    const nouveauPanier = panierActuel.filter((_, i) => i !== index);
-    sauvegarderPanier(nouveauPanier);
-    console.log('🗑️ Produit retiré, index:', index);
+    sauvegarderPanier(panierActuel.filter((_, i) => i !== index));
   }, [sauvegarderPanier]);
 
   const modifierQuantite = useCallback((index, nouvelleQuantite) => {
-    if (nouvelleQuantite <= 0) {
-      retirerDuPanier(index);
-      return;
-    }
-
+    if (nouvelleQuantite <= 0) { retirerDuPanier(index); return; }
     const panierActuel = JSON.parse(localStorage.getItem(PANIER_STORAGE_KEY) || '[]');
     const nouveauPanier = [...panierActuel];
-    
     if (nouveauPanier[index]) {
-      nouveauPanier[index] = {
-        ...nouveauPanier[index],
-        quantite: nouvelleQuantite
-      };
+      nouveauPanier[index] = { ...nouveauPanier[index], quantite: nouvelleQuantite };
       sauvegarderPanier(nouveauPanier);
-      console.log('🔄 Quantité modifiée, index:', index, 'nouvelle quantité:', nouvelleQuantite);
     }
   }, [retirerDuPanier, sauvegarderPanier]);
 
   const viderPanier = useCallback(() => {
     sauvegarderPanier([]);
-    console.log('🗑️ Panier vidé');
   }, [sauvegarderPanier]);
 
   const totalPanier = panier.reduce((sum, item) => {
-    const prixConverti = convertPrice(item.prix, item.devise_origine || item.pays?.devise || 'XOF');
-    return sum + (prixConverti * (item.quantite || 1));
+    return sum + ((parseFloat(item.prix) || 0) * (item.quantite || 1));
   }, 0);
 
-  const nombreArticles = panier.reduce(
-    (sum, item) => sum + (item.quantite || 1), 
-    0
-  );
+  const nombreArticles = panier.reduce((sum, item) => sum + (item.quantite || 1), 0);
 
   return {
     panier,
@@ -149,9 +97,9 @@ export function usePanier() {
     retirerDuPanier,
     modifierQuantite,
     viderPanier,
-    totalPanier: totalPanier.toFixed(2), // ← Format 2 décimales
+    totalPanier: totalPanier.toFixed(2),
     nombreArticles,
-    userCurrency, // ← Export aussi la devise
-    convertPrice  // ← Export pour usage externe
+    userCurrency: 'MAD',
+    convertPrice: (price) => parseFloat(price) || 0
   };
 }

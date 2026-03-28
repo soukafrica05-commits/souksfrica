@@ -149,7 +149,7 @@ export default function PromoProducts() {
                   {/* Prix */}
                   <div className="flex items-baseline gap-2 mb-3">
                     <span className="text-2xl font-bold text-red-600">
-                      {Math.round(promo.prix_promo).toLocaleString()} {produit.pays?.devise || 'FCFA'}
+                      {Math.round(promo.prix_promo).toLocaleString()} {MAD}
                     </span>
                     <span className="text-sm text-gray-500 line-through">
                       {Math.round(promo.prix_original).toLocaleString()}
@@ -159,7 +159,7 @@ export default function PromoProducts() {
                   {/* Économie */}
                   <div className="mb-3">
                     <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">
-                      Économisez {Math.round(promo.economie).toLocaleString()} {produit.pays?.devise || 'FCFA'}
+                      Économisez {Math.round(promo.economie).toLocaleString()} {MAD}
                     </span>
                   </div>
 

@@ -10,11 +10,11 @@ import StarRating from '@/components/ui/StarRating';
 import CommentaireForm from '@/components/CommentaireForm';
 import CommentairesList from '@/components/CommentairesList';
 import PageTracker from '@/components/PageTracker';
-import { useCurrencyConverter } from '@/hooks/useCurrencyConverter'; 
+
 console.log('🔍 chambresAPI disponible:', typeof chambresAPI);
 
 export default function StructureDetail() {
-  const { userCurrency, convertPrice } = useCurrencyConverter();
+  const userCurrency = 'MAD';
   const params = useParams();
   const router = useRouter();
   const [structure, setStructure] = useState(null);
@@ -629,7 +629,7 @@ const ouvrirModalChambre = (chambre, indexImage = 0) => {
                           <p className="text-sm text-gray-600 mb-3 line-clamp-2">{produit.description}</p>
                           <div className="flex items-center justify-between">
                             <span className="text-xl font-bold text-primary">
-                              {convertPrice(produit.prix, produit.pays?.devise).toLocaleString()} {userCurrency}
+                              {(parseFloat(produit.prix) || 0).toLocaleString()} {userCurrency}
                             </span>
                             <span className="text-sm text-primary font-semibold">Voir le produit →</span>
                           </div>
@@ -733,14 +733,14 @@ const ouvrirModalChambre = (chambre, indexImage = 0) => {
                                 <>
                                   <p className="text-sm text-gray-600 mb-1">À partir de</p>
                                   <p className="text-2xl font-bold text-primary">
-                                    {convertPrice(chambre.prix_min, chambre.devise).toLocaleString()} - {convertPrice(chambre.prix_max, chambre.devise).toLocaleString()} {userCurrency}
+                                    {(parseFloat(chambre.prix_min) || 0).toLocaleString()} - {(parseFloat(chambre.prix_max) || 0).toLocaleString()} {userCurrency}
                                   </p>
                                 </>
                               ) : (
                                 <>
                                   <p className="text-sm text-gray-600 mb-1">Prix par nuit</p>
                                   <p className="text-2xl font-bold text-primary">
-                                    {convertPrice(chambre.prix_standard, chambre.devise).toLocaleString()} {userCurrency}
+                                    {(parseFloat(chambre.prix_standard) || 0).toLocaleString()} {userCurrency}
                                   </p>
                                 </>
                               )}
@@ -1180,15 +1180,15 @@ const ouvrirModalChambre = (chambre, indexImage = 0) => {
                   {chambreSelectionnee.prix_min && chambreSelectionnee.prix_max ? (
                     <>
                       <p className="text-3xl font-bold text-primary">
-                        {convertPrice(chambreSelectionnee.prix_min, structure.pays?.devise).toLocaleString()} - {convertPrice(chambreSelectionnee.prix_max, structure.pays?.devise).toLocaleString()} {userCurrency}
+                        {(parseFloat(chambreSelectionnee.prix_min) || 0).toLocaleString()} - {(parseFloat(chambreSelectionnee.prix_max) || 0).toLocaleString()} {userCurrency}
                       </p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Prix standard : {convertPrice(chambreSelectionnee.prix_standard, structure.pays?.devise).toLocaleString()} {userCurrency}
+                        Prix standard : {(parseFloat(chambreSelectionnee.prix_standard) || 0).toLocaleString()} {userCurrency}
                       </p>
                     </>
                   ) : (
                     <p className="text-3xl font-bold text-primary">
-                      {convertPrice(chambreSelectionnee.prix_standard, structure.pays?.devise).toLocaleString()} {userCurrency}
+                      {(parseFloat(chambreSelectionnee.prix_standard) || 0).toLocaleString()} {userCurrency}
                     </p>
                   )}
                 </div>

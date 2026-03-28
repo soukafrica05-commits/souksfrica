@@ -293,7 +293,7 @@ export default function AdminPromotions() {
   // Mode formulaire
   if (mode === 'formulaire') {
     const produitSelectionne = produits.find(p => p.id === formData.produit_id);
-    const devise = produitSelectionne?.pays?.devise || 'FCFA';
+    const devise = 'MAD';
 
     return (
       <AdminLayout titre={promoEnCours ? 'Modifier la promotion' : 'Nouvelle promotion'}>
@@ -561,7 +561,7 @@ export default function AdminPromotions() {
         <div className="grid gap-4">
           {promosFiltrees.map((promo) => {
             const produit = promo.produits;
-            const devise = produit?.pays?.devise || 'FCFA';
+            const devise = 'MAD';
             const pourcentage = Math.round((promo.economie / promo.prix_original) * 100);
             const active = estActive(promo);
 

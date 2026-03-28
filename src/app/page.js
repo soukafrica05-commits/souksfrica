@@ -2,10 +2,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  structuresAPI, 
-  produitsAPI, 
-  annoncesAPI, 
+import {
+  structuresAPI,
+  produitsAPI,
+  annoncesAPI,
   categoriesAPI,
   paysAPI,
   villesAPI,
@@ -15,13 +15,11 @@ import StarRating from '@/components/ui/StarRating';
 import { supabase } from '@/lib/supabase';
 
 import PageTracker from '@/components/PageTracker';
-import { useCurrencyConverter } from '@/hooks/useCurrencyConverter';
 import NewsletterCompact from '@/components/NewsletterCompact';
 import BanniereCarousel from '@/components/BanniereCarousel';
 
 
 export default function Home() {
-  const { userCurrency, convertPrice } = useCurrencyConverter();   // ✅ AJOUT
   // États pour les données
   const [structures, setStructures] = useState([]);
   const [structuresCombinees, setStructuresCombinees] = useState([]);
@@ -34,7 +32,7 @@ export default function Home() {
     structures: 0,
     villes: 0,
     annonces: 0,
-    pays: 0
+    regions: 0
   });
   const [bannieres, setBannieres] = useState([]);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -137,7 +135,7 @@ export default function Home() {
           *,
           produits (
             id, nom, images, prix,
-            pays:pays(devise)
+            region:pays(nom)
           )
         `)
         .eq('actif', true)
@@ -195,7 +193,7 @@ export default function Home() {
         structures: structuresData.length,
         villes: villesList.length,
         annonces: annoncesData.length,
-        pays: paysList.length
+        regions: paysList.length
       });
 
       setCategories(categoriesList);
@@ -276,10 +274,10 @@ export default function Home() {
               Bienvenue chez Mon Ami 🏪
             </h1>
             <p className="text-xl md:text-2xl text-green-100 mb-2">
-              Votre marketplace de proximité en Afrique
+              Votre marketplace de proximité au Maroc
             </p>
             <p className="text-lg text-green-200">
-              Découvrez les meilleurs partenaires, clients, fournisseurs, prospects, services, annonces et opportunités d'affaires du continent.
+              Découvrez les meilleurs partenaires, clients, fournisseurs, prospects, services, annonces et opportunités d'affaires au Maroc.
             </p>
           </div>
 
@@ -312,13 +310,13 @@ export default function Home() {
               <div className="text-sm text-green-100">Annonces</div>
             </Link>
 
-            {/* Pays → /structures (avec filtre pays) */}
-            <Link 
+            {/* Régions → /structures */}
+            <Link
               href="/structures"
               className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20 hover:bg-white/20 transition cursor-pointer"
             >
-              <div className="text-3xl font-bold text-white">{statsGlobales.pays}</div>
-              <div className="text-sm text-green-100">Pays</div>
+              <div className="text-3xl font-bold text-white">{statsGlobales.regions}</div>
+              <div className="text-sm text-green-100">Régions</div>
             </Link>
           </div>
           {/* Bouton Inscription Centré */}
@@ -423,7 +421,7 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                   {produitsPromo.map(produit => (
-                    <ProduitCard key={produit.id} produit={produit} promo={true} convertPrice={convertPrice} userCurrency={userCurrency} />
+                    <ProduitCard key={produit.id} produit={produit} promo={true} />
                   ))}
                 </div>
               </section>
@@ -446,7 +444,7 @@ export default function Home() {
                 <>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     {produitsCombines.map(produit => (
-                      <ProduitCard key={produit.id} produit={produit} convertPrice={convertPrice} userCurrency={userCurrency} />
+                      <ProduitCard key={produit.id} produit={produit} />
                     ))}
                   </div>
                   <div className="text-center mt-8">
@@ -574,7 +572,7 @@ function StructureCard({ structure, categories, featured = false }) {
 }
 
 // Composant Produit Card (avec promo)
-function ProduitCard({ produit, promo = false, convertPrice, userCurrency }) {
+function ProduitCard({ produit, promo = false }) {
   return (
     <Link 
       href={`/produit/${produit.id}`}
@@ -607,19 +605,19 @@ function ProduitCard({ produit, promo = false, convertPrice, userCurrency }) {
           <div>
             <div className="flex items-baseline gap-2 mb-1">
               <span className="text-lg font-bold text-red-600">
-                {convertPrice(Math.round(produit.promo.prix_promo), produit.pays?.devise).toLocaleString()} {userCurrency}
+                {Math.round(produit.promo.prix_promo).toLocaleString()} MAD
               </span>
               <span className="text-xs text-gray-500 line-through">
-                {convertPrice(Math.round(produit.promo.prix_original), produit.pays?.devise).toLocaleString()}
+                {Math.round(produit.promo.prix_original).toLocaleString()}
               </span>
             </div>
             <span className="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded">
-              Économisez {convertPrice(Math.round(produit.promo.economie), produit.pays?.devise).toLocaleString()}
+              Économisez {Math.round(produit.promo.economie).toLocaleString()}
             </span>
           </div>
         ) : (
           <p className="text-lg font-bold text-primary">
-            {convertPrice(produit.prix, produit.pays?.devise).toLocaleString()} {userCurrency}
+            {(parseFloat(produit.prix) || 0).toLocaleString()} MAD
           </p>
         )}
         
@@ -672,7 +670,7 @@ function AnnonceCard({ annonce }) {
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
             <span className="flex items-center gap-1">
-              📍 {annonce.pays?.nom || 'Non spécifié'}
+              📍 {annonce.pays?.nom || annonce.ville?.nom || 'Maroc'}
             </span>
             {annonce.ville?.nom && (
               <span className="flex items-center gap-1">

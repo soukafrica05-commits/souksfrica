@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePanier } from '@/hooks/usePanier';
 import { supabase } from '@/lib/supabase';
-import { useCurrencyConverter } from '@/hooks/useCurrencyConverter';
 
 export default function PanierFlottant() {
   const { 
@@ -54,11 +53,11 @@ export default function PanierFlottant() {
     
     panier.forEach((item, index) => {
       message += `${index + 1}. ${item.nom}\n`;
-      message += `   Prix: ${convertPrice(item.prix, item.devise_origine).toLocaleString()} ${userCurrency}\n`;
+      message += `   Prix: ${(parseFloat(item.prix) || 0).toLocaleString()} MAD\n`;
       message += `   Quantité: ${item.quantite || 1}\n\n`;
     });
     
-    message += `💰 *TOTAL: ${totalPanier} ${userCurrency}*\n\n`;
+    message += `💰 *TOTAL: ${totalPanier} MAD*\n\n`;
     message += `📍 Depuis: Chez Mon Ami - Boutique en ligne`;
     
     const whatsappUrl = `https://wa.me/${telephone.replace(/[\s-]/g, '')}?text=${encodeURIComponent(message)}`;
@@ -83,10 +82,10 @@ export default function PanierFlottant() {
     let corpsEmail = `NOUVELLE COMMANDE - CHEZ MON AMI\n================================\n\nCLIENT:\n-------\nNom: ${formulaireCommande.nom}\nTéléphone: ${formulaireCommande.telephone}\nEmail: ${formulaireCommande.email}\n\nLIVRAISON:\n----------\n${formulaireCommande.adresse}\n\nPRODUITS COMMANDÉS:\n-------------------\n`;
 
     panier.forEach((item, index) => {
-      corpsEmail += `\n${index + 1}. ${item.nom}\n   Prix unitaire: ${convertPrice(item.prix, item.devise_origine).toLocaleString()} ${userCurrency}\n   Quantité: ${item.quantite || 1}\n   Sous-total: ${(convertPrice(item.prix, item.devise_origine) * (item.quantite || 1)).toLocaleString()} ${userCurrency}\n`;
+      corpsEmail += `\n${index + 1}. ${item.nom}\n   Prix unitaire: ${(parseFloat(item.prix) || 0).toLocaleString()} MAD\n   Quantité: ${item.quantite || 1}\n   Sous-total: ${((parseFloat(item.prix) || 0) * (item.quantite || 1)).toLocaleString()} MAD\n`;
     });
 
-    corpsEmail += `\n================================\nTOTAL: ${totalPanier} ${userCurrency}\n================================`;
+    corpsEmail += `\n================================\nTOTAL: ${totalPanier} MAD\n================================`;
 
     if (formulaireCommande.message) {
       corpsEmail += `\n\nMESSAGE DU CLIENT:\n${formulaireCommande.message}`;
@@ -225,7 +224,7 @@ export default function PanierFlottant() {
                       <div className="flex-1">
                         <h3 className="font-bold">{item.nom}</h3>
                         <p className="text-accent font-bold">
-                          {convertPrice(item.prix, item.devise_origine).toLocaleString()} {userCurrency}
+                          {(parseFloat(item.prix) || 0).toLocaleString()} MAD
                         </p>
                         
                         {/* Contrôles quantité */}
@@ -259,7 +258,7 @@ export default function PanierFlottant() {
                   <div className="border-t pt-4 mt-4">
                     <div className="flex justify-between text-xl font-bold mb-4">
                       <span>Total:</span>
-                      <span className="text-accent">{parseFloat(totalPanier).toLocaleString()} {userCurrency}</span>
+                      <span className="text-accent">{parseFloat(totalPanier).toLocaleString()} MAD</span>
                     </div>
                     
                     <button 
