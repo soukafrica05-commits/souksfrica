@@ -21,20 +21,20 @@ export default function Conditions() {
             
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
               <p className="text-blue-900 font-semibold">
-                ℹ️ En accédant et en utilisant le site Chez Mon Ami, vous acceptez les présentes conditions générales d'utilisation sans réserve.
+                ℹ️ En accédant et en utilisant le site Souk Africa, vous acceptez les présentes conditions générales d'utilisation sans réserve.
               </p>
             </div>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">1. Objet</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions d'utilisation du site <strong>Chez Mon Ami</strong>, accessible à l'adresse www.chezmonami.com.
+                Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions d'utilisation du site <strong>Souk Africa</strong>, accessible à l'adresse www.soukafrica.ma.
               </p>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami est une plateforme gratuite de mise en relation permettant de :
+                Souk Africa est une plateforme gratuite de mise en relation ouverte à tous — entreprises, commerçants et particuliers — permettant de :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
-                <li>Découvrir des structures commerciales en Afrique (restaurants, salons, boutiques, services)</li>
+                <li>Découvrir des structures commerciales au Maroc (restaurants, salons, boutiques, services, artisans)</li>
                 <li>Consulter des produits et articles proposés par ces structures</li>
                 <li>Accéder à des annonces professionnelles (emplois, formations, événements, appels d'offres)</li>
               </ul>
@@ -45,7 +45,7 @@ export default function Conditions() {
               
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">2.1 Accès libre et gratuit</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                L'accès au site Chez Mon Ami est <strong>libre et gratuit</strong>. Aucune inscription n'est requise pour consulter les structures, produits et annonces.
+                L'accès au site Souk Africa est <strong>libre et gratuit</strong>. Aucune inscription n'est requise pour consulter les structures, produits et annonces.
               </p>
               
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">2.2 Disponibilité</h3>
@@ -58,7 +58,7 @@ export default function Conditions() {
                 <li>Problèmes techniques indépendants de notre volonté</li>
               </ul>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami ne saurait être tenue responsable de toute interruption temporaire ou définitive du service.
+                Souk Africa ne saurait être tenue responsable de toute interruption temporaire ou définitive du service.
               </p>
 
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">2.3 Prérequis techniques</h3>
@@ -90,7 +90,7 @@ export default function Conditions() {
 
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">3.2 Pas de compte utilisateur requis</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami ne nécessite <strong>pas d'inscription</strong> pour les visiteurs. Vous pouvez librement consulter :
+                Souk Africa ne nécessite <strong>pas d'inscription</strong> pour les visiteurs. Vous pouvez librement consulter :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
                 <li>Les fiches des structures (restaurants, salons, boutiques, etc.)</li>
@@ -107,19 +107,19 @@ export default function Conditions() {
                   ⚠️ Restriction importante
                 </p>
                 <p className="text-orange-800">
-                  Actuellement, seuls les <strong>administrateurs de Chez Mon Ami</strong> peuvent publier du contenu 
+                  Actuellement, seuls les <strong>administrateurs de Souk Africa</strong> peuvent publier du contenu 
                   (structures, produits, annonces). Les utilisateurs ne peuvent pas créer de compte ni publier directement.
                 </p>
               </div>
 
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">4.1 Demande de référencement</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Si vous souhaitez que votre structure soit référencée sur Chez Mon Ami, vous pouvez nous contacter :
+                Si vous souhaitez que votre structure soit référencée sur Souk Africa, vous pouvez nous contacter :
               </p>
               <ul className="list-none text-gray-700 space-y-2 mb-4 bg-green-50 p-4 rounded-lg">
                 <li className="flex items-center gap-2">
                   <span>📧</span>
-                  <span>Email : <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline font-semibold">contact@chezmonami.com</a></span>
+                  <span>Email : <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline font-semibold">contact@soukafrica.ma</a></span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span>📱</span>
@@ -129,7 +129,7 @@ export default function Conditions() {
 
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">4.2 Modération du contenu</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Tout contenu publié sur Chez Mon Ami est soumis à une <strong>validation par les administrateurs</strong> avant publication. 
+                Tout contenu publié sur Souk Africa est soumis à une <strong>validation par les administrateurs</strong> avant publication. 
                 Nous nous réservons le droit de :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
@@ -147,7 +147,7 @@ export default function Conditions() {
                   ✅ Aucune transaction en ligne
                 </p>
                 <p className="text-green-800">
-                  Chez Mon Ami est une <strong>plateforme de mise en relation uniquement</strong>. 
+                  Souk Africa est une <strong>plateforme de mise en relation uniquement</strong>. 
                   Nous ne gérons aucune transaction financière, aucun paiement en ligne, et ne percevons aucune commission.
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function Conditions() {
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">5.2 Responsabilité des transactions</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Les échanges commerciaux se font <strong>directement entre l'utilisateur et la structure</strong>. 
-                Chez Mon Ami n'est pas partie prenante de ces transactions et ne peut être tenue responsable :
+                Souk Africa n'est pas partie prenante de ces transactions et ne peut être tenue responsable :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
                 <li>De la qualité des produits ou services</li>
@@ -179,7 +179,7 @@ export default function Conditions() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">6. Propriété intellectuelle</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                L'ensemble des éléments du site Chez Mon Ami (design, logos, textes, graphismes, code source) sont protégés par le droit d'auteur.
+                L'ensemble des éléments du site Souk Africa (design, logos, textes, graphismes, code source) sont protégés par le droit d'auteur.
               </p>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Toute reproduction, représentation, modification ou exploitation sans autorisation expresse est interdite et constitue une contrefaçon.
@@ -188,7 +188,7 @@ export default function Conditions() {
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">6.1 Contenus des structures</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Les photos, descriptions et informations publiées par les structures restent la propriété de leurs auteurs. 
-                En acceptant le référencement, les structures accordent à Chez Mon Ami le droit de diffuser ces contenus sur la plateforme.
+                En acceptant le référencement, les structures accordent à Souk Africa le droit de diffuser ces contenus sur la plateforme.
               </p>
             </section>
 
@@ -203,7 +203,7 @@ export default function Conditions() {
 
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">7.2 Limitation de responsabilité</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami ne peut être tenue responsable :
+                Souk Africa ne peut être tenue responsable :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
                 <li>Des erreurs ou omissions dans les contenus publiés</li>
@@ -215,7 +215,7 @@ export default function Conditions() {
 
               <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-6">7.3 Liens externes</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Le site peut contenir des liens vers des sites tiers. Chez Mon Ami n'est pas responsable du contenu de ces sites externes.
+                Le site peut contenir des liens vers des sites tiers. Souk Africa n'est pas responsable du contenu de ces sites externes.
               </p>
             </section>
 
@@ -248,7 +248,7 @@ export default function Conditions() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">10. Modification des CGU</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami se réserve le droit de modifier les présentes CGU à tout moment. 
+                Souk Africa se réserve le droit de modifier les présentes CGU à tout moment. 
                 Les modifications entrent en vigueur dès leur publication sur le site.
               </p>
               <p className="text-gray-700 leading-relaxed mb-4">
@@ -278,7 +278,7 @@ export default function Conditions() {
               <ul className="list-none text-gray-700 space-y-2 mb-4 bg-green-50 p-4 rounded-lg">
                 <li className="flex items-center gap-2">
                   <span>📧</span>
-                  <span>Email : <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline font-semibold">contact@chezmonami.com</a></span>
+                  <span>Email : <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline font-semibold">contact@soukafrica.ma</a></span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span>📱</span>
@@ -293,7 +293,7 @@ export default function Conditions() {
 
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
               <p className="text-blue-900 font-semibold">
-                ✅ En utilisant Chez Mon Ami, vous reconnaissez avoir lu, compris et accepté les présentes Conditions Générales d'Utilisation.
+                ✅ En utilisant Souk Africa, vous reconnaissez avoir lu, compris et accepté les présentes Conditions Générales d'Utilisation.
               </p>
             </div>
 

@@ -82,7 +82,7 @@ export default function AdminSidebar() {
                   <h2 className="font-bold text-gray-800 group-hover:text-primary transition">
                     Admin
                   </h2>
-                  <p className="text-xs text-gray-500">ChezMonAmi</p>
+                  <p className="text-xs text-gray-500">Souk Africa</p>
                 </div>
               )}
             </Link>

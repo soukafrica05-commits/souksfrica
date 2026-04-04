@@ -260,7 +260,7 @@ export default function Home() {
             >
               <img
                 src={img}
-                alt={`Paysage africain ${index + 1}`}
+                alt={`Paysage marocain ${index + 1}`}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -271,13 +271,13 @@ export default function Home() {
         <div className="relative container mx-auto px-4 py-16 md:py-24"> {/* ✅ CHANGÉ max-w-7xl en container */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
-              Bienvenue chez Mon Ami 🏪
+              Bienvenue au Souk Africa 🏪
             </h1>
             <p className="text-xl md:text-2xl text-green-100 mb-2">
               Votre marketplace de proximité au Maroc
             </p>
             <p className="text-lg text-green-200">
-              Découvrez les meilleurs partenaires, clients, fournisseurs, prospects, services, annonces et opportunités d'affaires au Maroc.
+              Entreprises, artisans, commerçants ou particuliers — trouvez les meilleurs partenaires, produits et services au Maroc.
             </p>
           </div>
 

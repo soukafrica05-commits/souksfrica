@@ -195,7 +195,7 @@ export default function ProduitDetail() {
     message += `💰 *Prix unitaire:* ${produit.prix} ${userCurrency}\n`;
     message += `📊 *Quantité:* ${quantite}\n`;
     message += `💵 *Total:* ${produit.prix * quantite} ${userCurrency}\n\n`;
-    message += `📍 Depuis: Chez Mon Ami - Boutique en ligne`;
+    message += `📍 Depuis: Souk Africa - Boutique en ligne`;
     
     // ✅ ENREGISTRER DANS BDD
     await enregistrerCommande('whatsapp');
@@ -616,7 +616,7 @@ TOTAL: ${produit.prix * quantite} ${userCurrency}
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
-                  La commande sera envoyée à contact@chezmonami.com
+                  La commande sera envoyée à contact@soukafrica.ma
                 </p>
               </div>
             </div>

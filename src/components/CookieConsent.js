@@ -175,7 +175,7 @@ export default function CookieConsent() {
 
             {/* Description */}
             <p className="text-sm text-gray-600 mb-6">
-              Nous utilisons différents types de cookies pour améliorer votre expérience sur Chez Mon Ami. 
+              Nous utilisons différents types de cookies pour améliorer votre expérience sur Souk Africa. 
               Vous pouvez activer ou désactiver chaque catégorie ci-dessous.
             </p>
 

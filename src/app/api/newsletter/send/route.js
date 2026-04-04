@@ -78,14 +78,14 @@ function genererHTML({ titre, emoji, badge, contenu, ctaTexte, ctaLien }) {
     <div class="footer">
       <p>
         Vous recevez cet email car vous êtes abonné(e) à la newsletter de
-        <a href="${process.env.NEXT_PUBLIC_SITE_URL}">ChezMonAmi</a>.
+        <a href="${process.env.NEXT_PUBLIC_SITE_URL}">Souk Africa</a>.
       </p>
       <p>
         <a href="${process.env.NEXT_PUBLIC_SITE_URL}/desinscription?email={{EMAIL}}">
           Me désabonner
         </a>
       </p>
-      <p style="color:#bbb;font-size:11px;">ChezMonAmi — chezmonami.ma</p>
+      <p style="color:#bbb;font-size:11px;">Souk Africa — soukafrica.ma</p>
     </div>
   </div>
 </body>

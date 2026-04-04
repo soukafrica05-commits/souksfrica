@@ -58,7 +58,7 @@ export default function PanierFlottant() {
     });
     
     message += `💰 *TOTAL: ${totalPanier} MAD*\n\n`;
-    message += `📍 Depuis: Chez Mon Ami - Boutique en ligne`;
+    message += `📍 Depuis: Souk Africa - Boutique en ligne`;
     
     const whatsappUrl = `https://wa.me/${telephone.replace(/[\s-]/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -79,7 +79,7 @@ export default function PanierFlottant() {
     }
 
     const sujet = `Nouvelle commande - ${formulaireCommande.nom}`;
-    let corpsEmail = `NOUVELLE COMMANDE - CHEZ MON AMI\n================================\n\nCLIENT:\n-------\nNom: ${formulaireCommande.nom}\nTéléphone: ${formulaireCommande.telephone}\nEmail: ${formulaireCommande.email}\n\nLIVRAISON:\n----------\n${formulaireCommande.adresse}\n\nPRODUITS COMMANDÉS:\n-------------------\n`;
+    let corpsEmail = `NOUVELLE COMMANDE - SOUK AFRICA\n================================\n\nCLIENT:\n-------\nNom: ${formulaireCommande.nom}\nTéléphone: ${formulaireCommande.telephone}\nEmail: ${formulaireCommande.email}\n\nLIVRAISON:\n----------\n${formulaireCommande.adresse}\n\nPRODUITS COMMANDÉS:\n-------------------\n`;
 
     panier.forEach((item, index) => {
       corpsEmail += `\n${index + 1}. ${item.nom}\n   Prix unitaire: ${(parseFloat(item.prix) || 0).toLocaleString()} MAD\n   Quantité: ${item.quantite || 1}\n   Sous-total: ${((parseFloat(item.prix) || 0) * (item.quantite || 1)).toLocaleString()} MAD\n`;

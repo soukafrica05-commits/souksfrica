@@ -5,8 +5,8 @@ import CookieConsent from '@/components/CookieConsent'
 import Script from 'next/script'
 
 export const metadata = {
-  title: 'Chez Mon Ami - Votre plateforme de proximité en Afrique',
-  description: 'Découvrez les meilleurs restaurants, salons, boutiques et services près de chez vous',
+  title: 'Souk Africa - Votre marketplace de proximité au Maroc',
+  description: "Découvrez les meilleures entreprises, produits et opportunités d'affaires au Maroc",
 }
 
 export default function RootLayout({ children }) {

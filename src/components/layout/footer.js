@@ -136,16 +136,16 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <img
                 src="/images/logochezmonami.jpg"
-                alt="Chez Mon Ami Logo"
+                alt="Souk Africa Logo"
                 className="w-32 h-auto object-contain"
               />
             </div>
             <p className="text-green-100 text-sm leading-relaxed mb-4">
-              Votre marketplace de proximité en Afrique. Découvrez les meilleurs partenaires,
-              clients, fournisseurs, prospects, services, annonces et opportunités d'affaires du continent.
+              Votre marketplace de proximité au Maroc. Découvrez les meilleures entreprises,
+              produits, services et opportunités pour les professionnels et les particuliers.
             </p>
             <p className="text-green-200 text-xs italic mb-5">
-              Connecter l'Afrique, une communauté à la fois.
+              Connecter le Maroc, une communauté à la fois.
             </p>
 
             {/* ✅ Réseaux sociaux */}
@@ -249,7 +249,7 @@ export default function Footer() {
             {[
               { icon: '📧', label: 'Email', content: <a href="mailto:contact@chezmonami.ma" className="text-white hover:text-green-200 transition text-sm">contact@chezmonami.ma</a> },
               { icon: '📱', label: 'WhatsApp', content: <a href="https://wa.me/212693908389" target="_blank" rel="noopener noreferrer" className="text-white hover:text-green-200 transition text-sm">+212 693 908 389</a> },
-              { icon: '📍', label: 'Couverture', content: <p className="text-white text-sm">Afrique entière</p> },
+              { icon: '📍', label: 'Couverture', content: <p className="text-white text-sm">Tout le Maroc</p> },
               { icon: '⏰', label: 'Disponibilité', content: <p className="text-white text-sm">24h/24, 7j/7</p> },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
@@ -322,7 +322,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-green-100 text-sm">
-              &copy; {currentYear} <span className="font-semibold">Chez Mon Ami</span>. Tous droits réservés.
+              &copy; {currentYear} <span className="font-semibold">Souk Africa</span>. Tous droits réservés.
             </p>
             <div className="flex items-center gap-6 text-sm">
               {[
@@ -342,7 +342,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
               <span className="text-xl">🌍</span>
               <span className="text-green-100 text-xs font-medium">
-                Fait avec ❤️ en Afrique
+                Fait avec ❤️ au Maroc 🇲🇦
               </span>
             </div>
           </div>

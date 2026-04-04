@@ -12,6 +12,8 @@ export default function AdminComptes() {
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState('liste');
   const [compteEnCours, setCompteEnCours] = useState(null);
+  const [modaleMdp, setModaleMdp] = useState(null); // { email, mdp, type: 'creation'|'reset' }
+  const [copie, setCopie] = useState(false);
 
   const [formData, setFormData] = useState({
     nom: '',
@@ -90,16 +92,23 @@ export default function AdminComptes() {
     }
   };
 
+  const copierMdp = (mdp) => {
+    navigator.clipboard.writeText(mdp).then(() => {
+      setCopie(true);
+      setTimeout(() => setCopie(false), 2000);
+    });
+  };
+
   const reinitialiserMotDePasse = async (compte) => {
     const nouveauMdp = genererMotDePasseTemporaire();
-    if (!confirm('Réinitialiser le mot de passe de ' + compte.nom + ' ?')) return;
+    if (!confirm('Réinitialiser le mot de passe de ' + compte.nom + ' ?\n\nL\'administrateur devra changer son mot de passe à la prochaine connexion.')) return;
     try {
       const { error } = await supabase
         .from('comptes')
-        .update({ mot_de_passe: nouveauMdp })
+        .update({ mot_de_passe: nouveauMdp, doit_changer_mdp: true })
         .eq('id', compte.id);
       if (error) throw error;
-      alert('Mot de passe réinitialisé !\n\nNouveau mot de passe : ' + nouveauMdp + '\n\nCommuniquez-le de manière sécurisée.');
+      setModaleMdp({ email: compte.email, mdp: nouveauMdp, type: 'reset' });
       chargerComptes();
     } catch (error) {
       alert('Erreur: ' + error.message);
@@ -128,10 +137,11 @@ export default function AdminComptes() {
           email: formData.email,
           mot_de_passe: formData.motDePasse,
           role: formData.role,
-          actif: true
+          actif: true,
+          doit_changer_mdp: true
         });
         if (error) throw error;
-        alert('Compte créé !\n\nEmail : ' + formData.email + '\nMot de passe : ' + formData.motDePasse + '\n\nCommuniquez ces identifiants de manière sécurisée.');
+        setModaleMdp({ email: formData.email, mdp: formData.motDePasse, type: 'creation' });
       }
       setMode('liste');
       chargerComptes();
@@ -150,6 +160,73 @@ export default function AdminComptes() {
     }
   };
 
+  // Modale affichage mot de passe avec copie
+  const ModaleMdp = () => {
+    if (!modaleMdp) return null;
+    return (
+      <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-3">
+              {modaleMdp.type === 'creation' ? '✅' : '🔄'}
+            </div>
+            <h2 className="text-xl font-bold text-gray-800">
+              {modaleMdp.type === 'creation' ? 'Compte créé avec succès' : 'Mot de passe réinitialisé'}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              {modaleMdp.type === 'creation'
+                ? 'Communiquez ces identifiants de manière sécurisée'
+                : 'Communiquez ce mot de passe temporaire de manière sécurisée'}
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {/* Email */}
+            <div>
+              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Email</p>
+              <p className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-800 font-medium">
+                {modaleMdp.email}
+              </p>
+            </div>
+
+            {/* Mot de passe avec copie */}
+            <div>
+              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Mot de passe temporaire</p>
+              <div className="flex items-center gap-2">
+                <p className="flex-1 bg-orange-50 border border-orange-200 rounded-lg px-4 py-3 text-orange-800 font-mono font-bold tracking-wider">
+                  {modaleMdp.mdp}
+                </p>
+                <button
+                  onClick={() => copierMdp(modaleMdp.mdp)}
+                  className={`px-4 py-3 rounded-lg font-medium text-sm transition flex items-center gap-2 whitespace-nowrap ${
+                    copie
+                      ? 'bg-green-100 text-green-700 border border-green-300'
+                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                  }`}
+                >
+                  {copie ? '✅ Copié !' : '📋 Copier'}
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+              <p className="text-xs text-yellow-800">
+                ⚠️ L'administrateur devra <strong>changer ce mot de passe</strong> à sa première connexion.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => { setModaleMdp(null); setCopie(false); }}
+            className="w-full mt-6 btn-primary"
+          >
+            Fermer
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   if (!adminConnecte || loading) {
     return (
       <AdminLayout titre="Gestion des Comptes Admin">
@@ -163,6 +240,7 @@ export default function AdminComptes() {
   if (mode === 'formulaire') {
     return (
       <AdminLayout titre={compteEnCours ? 'Modifier le compte' : 'Créer un compte admin'}>
+        <ModaleMdp />
         <div className="max-w-2xl">
           <button onClick={() => setMode('liste')} className="mb-6 flex items-center gap-2 text-primary hover:text-primary-dark">
             ← Retour à la liste
@@ -182,7 +260,7 @@ export default function AdminComptes() {
               <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
               <input
                 type="email"
-                placeholder="admin@chezmonami.ma"
+                placeholder="admin@soukafrica.ma"
                 className="input-field"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -236,6 +314,7 @@ export default function AdminComptes() {
 
   return (
     <AdminLayout titre="Gestion des Comptes Admin" sousTitre={comptes.length + ' compte(s) administrateur(s)'}>
+      <ModaleMdp />
       <div className="mb-6 flex items-center justify-between">
         <button onClick={ajouterCompte} className="btn-primary flex items-center gap-2">
           ➕ Créer un compte admin
@@ -260,6 +339,9 @@ export default function AdminComptes() {
                   )}
                   {!compte.actif && (
                     <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-xs font-bold block">Désactivé</span>
+                  )}
+                  {compte.doit_changer_mdp && (
+                    <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold block">MDP à changer</span>
                   )}
                 </div>
               </div>

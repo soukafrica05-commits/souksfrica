@@ -174,11 +174,39 @@ export default function AdminLayout({ children, titre, sousTitre }) {
       icon: '🏢',
       description: 'Entreprises'
     },
-    { 
-      href: '/admin/produits', 
-      label: 'Produits', 
+    {
+      href: '/admin/produits',
+      label: 'Produits',
       icon: '📦',
       description: 'Catalogue'
+    },
+    {
+      href: '/admin/annonces',
+      label: 'Annonces',
+      icon: '📢',
+      description: 'Petites annonces'
+    },
+    {
+      href: '/admin/newsletter',
+      label: 'Newsletter',
+      icon: '📧',
+      description: 'Envoi d\'emails'
+    },
+  ];
+
+  // Items visibles uniquement pour le super_admin
+  const menuItemsSuperAdmin = [
+    {
+      href: '/admin/comptes',
+      label: 'Comptes Admin',
+      icon: '👥',
+      description: 'Gérer les admins'
+    },
+    {
+      href: '/admin/pays-villes',
+      label: 'Régions & Villes',
+      icon: '🗺️',
+      description: 'Gérer les régions'
     },
   ];
 
@@ -212,7 +240,7 @@ export default function AdminLayout({ children, titre, sousTitre }) {
                   <h2 className="font-bold text-gray-800 group-hover:text-primary transition">
                     Admin
                   </h2>
-                  <p className="text-xs text-gray-500">ChezMonAmi</p>
+                  <p className="text-xs text-gray-500">Souk Africa</p>
                 </div>
               )}
             </Link>
@@ -223,7 +251,6 @@ export default function AdminLayout({ children, titre, sousTitre }) {
             <div className="space-y-2">
               {menuItems.map((item) => {
                 const isActive = pathname === item.href;
-                
                 return (
                   <Link
                     key={item.href}
@@ -252,6 +279,47 @@ export default function AdminLayout({ children, titre, sousTitre }) {
                   </Link>
                 );
               })}
+
+              {/* Section Super Admin */}
+              {admin?.role === 'super_admin' && (
+                <>
+                  {sidebarOpen && (
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider px-4 pt-4 pb-1">
+                      Super Admin
+                    </p>
+                  )}
+                  {menuItemsSuperAdmin.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition group ${
+                          isActive
+                            ? 'bg-primary text-white shadow-md'
+                            : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        <span className="text-2xl">{item.icon}</span>
+                        {sidebarOpen && (
+                          <div className="flex-1 min-w-0">
+                            <p className={`font-semibold text-sm truncate ${
+                              isActive ? 'text-white' : 'text-gray-800 group-hover:text-primary'
+                            }`}>
+                              {item.label}
+                            </p>
+                            <p className={`text-xs truncate ${
+                              isActive ? 'text-white/80' : 'text-gray-500'
+                            }`}>
+                              {item.description}
+                            </p>
+                          </div>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </nav>
 
@@ -271,6 +339,19 @@ export default function AdminLayout({ children, titre, sousTitre }) {
                 )}
               </div>
             )}
+
+            {/* Bouton Changer mon MDP */}
+            <Link
+              href="/admin/changer-mot-de-passe"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition mb-2 ${
+                pathname === '/admin/changer-mot-de-passe'
+                  ? 'bg-orange-100 text-orange-700'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="text-xl">🔑</span>
+              {sidebarOpen && <span className="font-medium text-sm">Changer mon MDP</span>}
+            </Link>
 
             {/* Bouton Retour Accueil */}
             <Link

@@ -51,12 +51,18 @@ export default function AdminLoginSecure() {
         id: compte.id,
         nom: compte.nom,
         email: compte.email,
-        role: compte.role
+        role: compte.role,
+        doit_changer_mdp: compte.doit_changer_mdp || false
       }));
       localStorage.setItem('adminSessionStart', now.toString());
       localStorage.setItem('adminLastActivity', now.toString());
 
-      router.push('/admin/dashboard');
+      // Rediriger vers changement de MDP si obligatoire (première connexion ou reset)
+      if (compte.doit_changer_mdp) {
+        router.push('/admin/changer-mot-de-passe?mode=force');
+      } else {
+        router.push('/admin/dashboard');
+      }
 
     } catch (error) {
       console.error('Erreur connexion:', error);
@@ -75,7 +81,7 @@ export default function AdminLoginSecure() {
             🔒
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Chez Mon Ami</p>
+          <p className="text-gray-600">Souk Africa</p>
         </div>
 
         {/* Formulaire */}

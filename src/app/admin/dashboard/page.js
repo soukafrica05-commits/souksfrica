@@ -258,7 +258,7 @@ export default function AdminDashboard() {
                   <span className="text-xl">🏪</span>
                 </div>
                 <div>
-                  <div className="font-bold text-gray-800">Chez Mon Ami</div>
+                  <div className="font-bold text-gray-800">Souk Africa</div>
                   <div className="text-xs text-primary font-semibold">Admin Panel</div>
                 </div>
               </Link>

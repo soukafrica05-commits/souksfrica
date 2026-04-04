@@ -31,16 +31,16 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition">
             <div className="w-12 h-12 bg-neutral-cream rounded-lg flex items-center justify-center shadow-md overflow-hidden">
               <Image 
-                src="/images/chezmonami.jpg" 
-                alt="Chez Mon Ami" 
+                src="/images/logochezmonami.jpg" 
+                alt="Souk Africa" 
                 width={48}
                 height={48}
                 className="object-cover"
               />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Chez Mon Ami</h1>
-              <p className="text-xs text-green-200">Trouves ton partenaire panafricain en toute confiance</p>
+              <h1 className="text-2xl font-bold">Souk Africa</h1>
+              <p className="text-xs text-green-200">Votre marketplace de proximité au Maroc</p>
             </div>
           </Link>
           

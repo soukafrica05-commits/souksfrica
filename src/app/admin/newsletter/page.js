@@ -202,7 +202,7 @@ export default function AdminNewsletter() {
               <textarea
                 value={form.contenu}
                 onChange={e => setForm(f => ({ ...f, contenu: e.target.value }))}
-                placeholder={`Bonjour,\n\nNous avons une nouvelle offre spéciale pour vous...\n\nÀ bientôt,\nL'équipe ChezMonAmi`}
+                placeholder={`Bonjour,\n\nNous avons une nouvelle offre spéciale pour vous...\n\nÀ bientôt,\nL'équipe Souk Africa`}
                 required
                 rows={10}
                 className="input-field resize-none font-mono text-sm"

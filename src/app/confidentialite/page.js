@@ -21,7 +21,7 @@ export default function Confidentialite() {
             
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
               <p className="text-blue-900 font-semibold">
-                ℹ️ Chez Mon Ami s'engage à protéger la vie privée de ses utilisateurs et à traiter leurs données personnelles de manière transparente et sécurisée.
+                ℹ️ Souk Africa s'engage à protéger la vie privée de ses utilisateurs et à traiter leurs données personnelles de manière transparente et sécurisée.
               </p>
             </div>
 
@@ -31,9 +31,9 @@ export default function Confidentialite() {
                 Le responsable du traitement des données personnelles est :
               </p>
               <ul className="list-none text-gray-700 space-y-2 mb-4 bg-gray-50 p-4 rounded-lg">
-                <li><strong>Chez Mon Ami</strong></li>
+                <li><strong>Souk Africa</strong></li>
                 <li>Rabat, Maroc</li>
-                <li>Email : <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline">contact@chezmonami.com</a></li>
+                <li>Email : <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline">contact@soukafrica.ma</a></li>
                 <li>Téléphone : +212 673 623 053</li>
               </ul>
             </section>
@@ -110,7 +110,7 @@ export default function Confidentialite() {
                   <strong>📊 Structures enregistrées :</strong>
                 </p>
                 <p className="text-green-800">
-                  Les données des structures sont conservées pendant toute la durée de la collaboration avec Chez Mon Ami. 
+                  Les données des structures sont conservées pendant toute la durée de la collaboration avec Souk Africa. 
                   En cas de fin de collaboration, les données sont supprimées ou anonymisées dans un délai de 30 jours, 
                   sauf obligation légale de conservation plus longue.
                 </p>
@@ -140,7 +140,7 @@ export default function Confidentialite() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">6. Partage des données</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                <strong>Chez Mon Ami ne partage pas vos données personnelles avec des tiers</strong>, sauf dans les cas suivants :
+                <strong>Souk Africa ne partage pas vos données personnelles avec des tiers</strong>, sauf dans les cas suivants :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
                 <li><strong>Prestataires techniques :</strong> Hébergement du site, outils d'analyse (Google Analytics) - sous contrat de confidentialité</li>
@@ -218,7 +218,7 @@ export default function Confidentialite() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Pour exercer vos droits, contactez-nous à : <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline font-semibold">contact@chezmonami.com</a>
+                Pour exercer vos droits, contactez-nous à : <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline font-semibold">contact@soukafrica.ma</a>
               </p>
               <p className="text-gray-600 text-sm italic">
                 Nous nous engageons à répondre à votre demande dans un délai de 30 jours maximum.
@@ -258,7 +258,7 @@ export default function Confidentialite() {
               <ul className="list-none text-gray-700 space-y-2 mb-4 bg-green-50 p-4 rounded-lg">
                 <li className="flex items-center gap-2">
                   <span>📧</span>
-                  <span>Email : <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline font-semibold">contact@chezmonami.com</a></span>
+                  <span>Email : <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline font-semibold">contact@soukafrica.ma</a></span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span>📱</span>

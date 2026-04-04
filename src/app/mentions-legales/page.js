@@ -22,13 +22,13 @@ export default function MentionsLegales() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">1. Éditeur du site</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Le site <strong>Chez Mon Ami</strong> (accessible à l'adresse www.chezmonami.com) est édité par :
+                Le site <strong>Souk Africa</strong> (accessible à l'adresse www.soukafrica.ma) est édité par :
               </p>
               <ul className="list-none text-gray-700 space-y-2 mb-4 bg-gray-50 p-4 rounded-lg">
-                <li><strong>Raison sociale :</strong> Chez Mon Ami</li>
+                <li><strong>Raison sociale :</strong> Souk Africa</li>
                 <li><strong>Siège social :</strong> Rabat, Maroc</li>
                 <li><strong>Directeur de publication :</strong> Vanne Clif NKOY</li>
-                <li><strong>Email :</strong> <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline">contact@chezmonami.com</a></li>
+                <li><strong>Email :</strong> <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline">contact@soukafrica.ma</a></li>
                 <li><strong>Téléphone :</strong> <a href="tel:+212673623053" className="text-primary hover:underline">+212 673 623 053</a></li>
                 <li><strong>Numéro d'immatriculation :</strong> [À compléter ultérieurement]</li>
               </ul>
@@ -37,25 +37,25 @@ export default function MentionsLegales() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">2. Objet du site</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami est une plateforme de proximité dédiée à l'Afrique, permettant de découvrir et de référencer :
+                Souk Africa est une plateforme de proximité dédiée au Maroc, permettant de découvrir et de référencer :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
-                <li>Des structures commerciales (restaurants, salons de beauté, boutiques, services)</li>
-                <li>Des produits et articles en vente</li>
-                <li>Des annonces professionnelles (emplois, formations, événements, appels d'offres)</li>
+                <li>Des entreprises, artisans et commerçants (restaurants, salons, boutiques, services, BTP...)</li>
+                <li>Des produits et articles en vente, accessibles aux professionnels et aux particuliers</li>
+                <li>Des annonces (emplois, formations, événements, appels d'offres, opportunités)</li>
               </ul>
               <p className="text-gray-700 leading-relaxed mb-4">
-                La plateforme met en relation les structures avec les utilisateurs, sans effectuer de transactions financières en ligne.
+                La plateforme est ouverte à tous — entreprises, indépendants et particuliers — et met en relation vendeurs et acheteurs sans effectuer de transactions financières en ligne.
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">3. Propriété intellectuelle</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                L'ensemble du contenu présent sur le site Chez Mon Ami (textes, images, graphismes, logo, icônes, sons, logiciels, etc.) est la propriété exclusive de Chez Mon Ami ou de ses partenaires, sauf mentions contraires.
+                L'ensemble du contenu présent sur le site Souk Africa (textes, images, graphismes, logo, icônes, sons, logiciels, etc.) est la propriété exclusive de Souk Africa ou de ses partenaires, sauf mentions contraires.
               </p>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Toute reproduction, distribution, modification, adaptation, retransmission ou publication de ces différents éléments est strictement interdite sans l'accord exprès par écrit de Chez Mon Ami.
+                Toute reproduction, distribution, modification, adaptation, retransmission ou publication de ces différents éléments est strictement interdite sans l'accord exprès par écrit de Souk Africa.
               </p>
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
                 <p className="text-blue-900">
@@ -67,10 +67,10 @@ export default function MentionsLegales() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">4. Responsabilité</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami met tout en œuvre pour offrir aux utilisateurs des informations fiables et vérifiées. Cependant, nous ne pouvons garantir l'exactitude, la complétude ou l'actualité des informations diffusées sur le site.
+                Souk Africa met tout en œuvre pour offrir aux utilisateurs des informations fiables et vérifiées. Cependant, nous ne pouvons garantir l'exactitude, la complétude ou l'actualité des informations diffusées sur le site.
               </p>
               <p className="text-gray-700 leading-relaxed mb-4">
-                En conséquence, l'utilisateur reconnaît utiliser ces informations sous sa responsabilité exclusive. Chez Mon Ami ne saurait être tenue responsable :
+                En conséquence, l'utilisateur reconnaît utiliser ces informations sous sa responsabilité exclusive. Souk Africa ne saurait être tenue responsable :
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4 ml-4">
                 <li>Des erreurs ou omissions dans les contenus publiés par les structures</li>
@@ -83,7 +83,7 @@ export default function MentionsLegales() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">5. Données personnelles</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Chez Mon Ami accorde une grande importance à la protection des données personnelles de ses utilisateurs.
+                Souk Africa accorde une grande importance à la protection des données personnelles de ses utilisateurs.
               </p>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Pour plus d'informations sur la collecte, le traitement et la protection de vos données personnelles, veuillez consulter notre{' '}
@@ -118,7 +118,7 @@ export default function MentionsLegales() {
               <ul className="list-none text-gray-700 space-y-2 mb-4 bg-green-50 p-4 rounded-lg">
                 <li className="flex items-center gap-2">
                   <span>📧</span>
-                  <span>Par email : <a href="mailto:contact@chezmonami.com" className="text-primary hover:underline font-semibold">contact@chezmonami.com</a></span>
+                  <span>Par email : <a href="mailto:contact@soukafrica.ma" className="text-primary hover:underline font-semibold">contact@soukafrica.ma</a></span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span>📱</span>
