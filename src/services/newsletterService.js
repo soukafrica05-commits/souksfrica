@@ -39,7 +39,7 @@ export async function envoyerNotificationNewsletter(item) {
   if (!data.success) {
     await supabase
       .from('newsletter_queue')
-      .update({ statut: 'erreur', erreur_detail: data.error })
+      .update({ statut: 'erreur', erreur_message: data.error })
       .eq('id', item.id);
     throw new Error(data.error);
   }

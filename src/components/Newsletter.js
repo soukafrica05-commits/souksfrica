@@ -52,9 +52,7 @@ export default function Newsletter() {
           .from('newsletter_abonnes')
           .insert({
             email,
-            nom: nom || null,
-            actif: true,
-            date_confirmation: new Date().toISOString()
+            actif: true
           });
 
         if (error) throw error;

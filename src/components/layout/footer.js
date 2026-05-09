@@ -247,8 +247,8 @@ export default function Footer() {
         <div className="mt-8 pt-8 border-t border-white/20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: '📧', label: 'Email', content: <a href="mailto:contact@chezmonami.ma" className="text-white hover:text-green-200 transition text-sm">contact@chezmonami.ma</a> },
-              { icon: '📱', label: 'WhatsApp', content: <a href="https://wa.me/212693908389" target="_blank" rel="noopener noreferrer" className="text-white hover:text-green-200 transition text-sm">+212 693 908 389</a> },
+              { icon: '📧', label: 'Email', content: <a href="mailto:contact@soukafrica.ma" className="text-white hover:text-green-200 transition text-sm">contact@soukafrica.ma</a> },
+              { icon: '📱', label: 'WhatsApp', content: <a href="https://wa.me/212679660815" target="_blank" rel="noopener noreferrer" className="text-white hover:text-green-200 transition text-sm">+212 679-660815</a> },
               { icon: '📍', label: 'Couverture', content: <p className="text-white text-sm">Tout le Maroc</p> },
               { icon: '⏰', label: 'Disponibilité', content: <p className="text-white text-sm">24h/24, 7j/7</p> },
             ].map((item, i) => (

@@ -75,7 +75,7 @@ export default function NewsletterCompact() {
         } else {
           const { error } = await supabase
             .from('newsletter_abonnes')
-            .update({ actif: true, date_confirmation: new Date().toISOString() })
+            .update({ actif: true })
             .eq('id', existing.id);
           if (error) throw error;
           setAbonneId(existing.id);
@@ -88,7 +88,6 @@ export default function NewsletterCompact() {
           .insert({
             email,
             actif: true,
-            date_confirmation: new Date().toISOString(),
             preferences: PREFS_DEFAUT,
           })
           .select('id')
