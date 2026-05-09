@@ -175,7 +175,7 @@ export default function AdminProduits() {
         nom: formData.nom,
         description: formData.description,
         prix: parseInt(formData.prix),
-        categorie: formData.categorie_id,
+        categorie: formData.categorie_id || null,
         stock: parseInt(formData.stock),
         pays_id: formData.pays_id,
         ville_id: formData.ville_id,

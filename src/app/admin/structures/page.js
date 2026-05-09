@@ -158,7 +158,7 @@ export default function AdminStructures() {
     setStructureEnCours(null);
     setFormData({
       nom: '',
-      categorie_id: categories[0]?.id || '',
+      categorie_id: categories[0]?.id || null,
       ville_id: '',
       pays_id: '',
       description: '',
@@ -295,7 +295,7 @@ export default function AdminStructures() {
       // Champs obligatoires
       nom: formData.nom,
       description: formData.description || '',
-      categorie_id: formData.categorie_id,
+      categorie_id: formData.categorie_id || null,
       ville_id: formData.ville_id,
       pays_id: formData.pays_id,
       telephone: formData.telephone,

@@ -9,7 +9,8 @@ import {
   categoriesAPI,
   paysAPI,
   villesAPI,
-  bannieresAPI
+  bannieresAPI,
+  trierPopulairesEtRecents
 } from '@/lib/api';
 import StarRating from '@/components/ui/StarRating';
 import { supabase } from '@/lib/supabase';
@@ -97,8 +98,7 @@ export default function Home() {
       .lte('date_debut', now)
       .or(`date_fin.is.null,date_fin.gte.${now}`)
       .or('position.eq.accueil,position.eq.tous')
-      .order('ordre', { ascending: true })
-      .limit(6);
+      .order('ordre', { ascending: true });
 
     if (misesError) throw misesError;
 
@@ -141,8 +141,7 @@ export default function Home() {
         .eq('actif', true)
         .lte('date_debut', now)
         .gte('date_fin', now)
-        .order('created_at', { ascending: false })
-        .limit(5);
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       const validPromos = (data || []).filter(p => p.produits).map(promo => ({
@@ -201,23 +200,14 @@ export default function Home() {
       setAnnonces(annoncesData);
       setBannieres(bannieresData);
 
-      // Combiner structures récentes et populaires
-      const structuresMap = new Map();
-      [...structuresRecentesData, ...structuresPopulairesData].forEach(structure => {
-        if (!structuresMap.has(structure.id)) {
-          structuresMap.set(structure.id, structure);
-        }
-      });
-      setStructuresCombinees(Array.from(structuresMap.values()).slice(0, 8));
+      // Tri intelligent : populaires + bonus récence pour les nouveaux
+      // → Les plus visités passent en tête, les nouveaux sont mis en avant
+      const structuresTriees = await trierPopulairesEtRecents(structuresData, 'structure');
+      setStructuresCombinees(structuresTriees.slice(0, 15));
 
-      // Combiner produits récents et populaires
-      const produitsMap = new Map();
-      [...produitsRecentsData, ...produitsPopulairesData].forEach(produit => {
-        if (!produitsMap.has(produit.id)) {
-          produitsMap.set(produit.id, produit);
-        }
-      });
-      setProduitsCombines(Array.from(produitsMap.values()).slice(0, 10));
+      const produitsAll = await produitsAPI.getAll();
+      const produitsTries = await trierPopulairesEtRecents(produitsAll, 'produit');
+      setProduitsCombines(produitsTries.slice(0, 15));
 
       // ✅ CHARGER FEATURED + PROMOS
       await Promise.all([
@@ -372,7 +362,7 @@ export default function Home() {
                   <span className="text-2xl">⭐</span>
                   <h2 className="text-2xl font-bold text-gray-800">Entreprises à la une</h2>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                   {structuresFeatured.map(structure => (
                     <StructureCard key={structure.id} structure={structure} categories={categories} featured={true} />
                   ))}
@@ -395,7 +385,7 @@ export default function Home() {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     {structuresCombinees.map(structure => (
                       <StructureCard key={structure.id} structure={structure} categories={categories} />
                     ))}
@@ -525,7 +515,7 @@ function StructureCard({ structure, categories, featured = false }) {
   
   return (
     <Link 
-      href={`/structure/${structure.id}`}
+      href={`/structure/${structure.slug || structure.id}`}
       className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all hover:scale-105 cursor-pointer relative"
     >
       {/* ✅ Badge Featured */}

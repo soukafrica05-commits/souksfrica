@@ -11,7 +11,6 @@ export default function AdminCategories() {
   const [categorieEnCours, setCategorieEnCours] = useState(null);
   
   const [formData, setFormData] = useState({
-    id: '',
     nom: '',
     icon: '',
     color: 'bg-blue-500'
@@ -50,14 +49,13 @@ export default function AdminCategories() {
   const ouvrirFormulaireAjout = () => {
     setModeFormulaire('ajout');
     setCategorieEnCours(null);
-    setFormData({ id: '', nom: '', icon: '', color: 'bg-blue-500' });
+    setFormData({ nom: '', icon: '', color: 'bg-blue-500' });
   };
 
   const ouvrirFormulaireEdition = (categorie) => {
     setModeFormulaire('edition');
     setCategorieEnCours(categorie);
     setFormData({
-      id: categorie.id,
       nom: categorie.nom,
       icon: categorie.icon,
       color: categorie.color
@@ -67,12 +65,12 @@ export default function AdminCategories() {
   const fermerFormulaire = () => {
     setModeFormulaire(false);
     setCategorieEnCours(null);
-    setFormData({ id: '', nom: '', icon: '', color: 'bg-blue-500' });
+    setFormData({ nom: '', icon: '', color: 'bg-blue-500' });
   };
 
   const sauvegarderCategorie = async () => {
-    if (!formData.id || !formData.nom || !formData.icon) {
-      alert('⚠️ Veuillez remplir tous les champs');
+    if (!formData.nom || !formData.icon) {
+      alert('⚠️ Veuillez remplir le nom et l\'icône');
       return;
     }
 
@@ -147,27 +145,10 @@ export default function AdminCategories() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">ID de la catégorie *</label>
-              <input 
-                type="text" 
-                placeholder="Ex: coiffure" 
-                className="input-field"
-                value={formData.id}
-                onChange={(e) => setFormData({...formData, id: e.target.value.toLowerCase().replace(/\s+/g, '_')})}
-                disabled={modeFormulaire === 'edition'}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                {modeFormulaire === 'edition' 
-                  ? "L'ID ne peut pas être modifié" 
-                  : "Minuscules, sans espaces (utilisez _ pour séparer)"}
-              </p>
-            </div>
-
-            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Nom affiché *</label>
-              <input 
-                type="text" 
-                placeholder="Ex: Coiffure" 
+              <input
+                type="text"
+                placeholder="Ex: Coiffure"
                 className="input-field"
                 value={formData.nom}
                 onChange={(e) => setFormData({...formData, nom: e.target.value})}
@@ -236,8 +217,7 @@ export default function AdminCategories() {
             </div>
 
             <div className="text-sm text-gray-600 mb-4">
-              <p><strong>ID :</strong> {categorie.id}</p>
-              <p><strong>Classe CSS :</strong> {categorie.color}</p>
+              <p><strong>Couleur :</strong> {categorie.color}</p>
             </div>
 
             {/* Boutons d'action */}
@@ -269,10 +249,6 @@ export default function AdminCategories() {
           <li className="flex items-start gap-2">
             <span>•</span>
             <span>Les catégories sont utilisées par les structures. Supprimer une catégorie peut affecter les structures existantes.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span>•</span>
-            <span>L'ID de catégorie ne peut pas être modifié après création (limitation de sécurité).</span>
           </li>
           <li className="flex items-start gap-2">
             <span>•</span>

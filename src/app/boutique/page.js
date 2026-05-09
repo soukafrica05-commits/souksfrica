@@ -2,13 +2,13 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { produitsAPI, categoriesProduitsAPI, paysAPI, villesAPI } from '@/lib/api';
+import { produitsAPI, categoriesProduitsAPI, paysAPI, villesAPI, trierPopulairesEtRecents } from '@/lib/api';
 import { supabase } from '@/lib/supabase';
 import { usePanier } from '@/hooks/usePanier';
 import PanierFlottant from '@/components/PanierFlottant';
 import PageTracker from '@/components/PageTracker';
 
-const PRODUITS_PAR_PAGE = 20;
+const PRODUITS_PAR_PAGE = 30;
 const CATEGORIES_VISIBLES = 5;
 
 export default function BoutiquePage() {
@@ -58,8 +58,7 @@ export default function BoutiquePage() {
         .eq('actif', true)
         .lte('date_debut', now)
         .gte('date_fin', now)
-        .order('created_at', { ascending: false })
-        .limit(10);
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       const validPromos = (data || []).filter(p => p.produits);
@@ -80,14 +79,9 @@ export default function BoutiquePage() {
         chargerProduitsPromo()
       ]);
 
-      const produitsTriés = produitsData.sort((a, b) => {
-        if (Math.abs((a.vues_total || 0) - (b.vues_total || 0)) > 10) {
-          return (b.vues_total || 0) - (a.vues_total || 0);
-        }
-        return new Date(b.created_at) - new Date(a.created_at);
-      });
-
-      setProduits(produitsTriés);
+      // Tri intelligent : les plus visités + bonus pour les nouveaux
+      const produitsTries = await trierPopulairesEtRecents(produitsData, 'produit');
+      setProduits(produitsTries);
       setCategories(categoriesData);
       setRegions(paysData);
     } catch (error) {
@@ -336,7 +330,7 @@ export default function BoutiquePage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
               {produitsPage.map(produit => (
                 <div key={produit.id} className="card overflow-hidden hover:shadow-xl transition-all hover:scale-105">
                   <Link href={`/produit/${produit.id}`} className="block">

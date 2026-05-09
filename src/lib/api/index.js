@@ -3,6 +3,85 @@
 
 // Imports depuis les fichiers individuels
 import { supabase } from '../supabase';
+import { generateSlug } from '../slugify';
+
+// Helper: vérifie si une chaîne ressemble à un UUID
+function isUUID(str) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+}
+
+// ============================================
+// HELPERS DE TRI : populaires + récents
+// ============================================
+
+// Récupère les vues totales pour une liste d'IDs et un type d'élément
+async function getVuesMap(elementIds, elementType) {
+  if (!elementIds || elementIds.length === 0) return {};
+  const { data } = await supabase
+    .from('elements_populaires')
+    .select('element_id, vues_total')
+    .eq('element_type', elementType)
+    .in('element_id', elementIds);
+
+  const map = {};
+  (data || []).forEach(row => {
+    map[row.element_id] = row.vues_total || 0;
+  });
+  return map;
+}
+
+// Calcule un score qui combine popularité + bonus de récence
+// - Vues totales = base du score
+// - Bonus +50 pour les éléments créés dans les 7 derniers jours (donc nouveaux mis en avant)
+// - Bonus +20 pour ceux créés dans les 30 derniers jours
+function calculerScore(item, vues) {
+  const v = vues || 0;
+  if (!item.created_at) return v;
+  const ageMs = Date.now() - new Date(item.created_at).getTime();
+  const ageJours = ageMs / (1000 * 60 * 60 * 24);
+  let bonus = 0;
+  if (ageJours <= 7) bonus = 50;
+  else if (ageJours <= 30) bonus = 20;
+  return v + bonus;
+}
+
+// Trie un tableau d'éléments par "score combiné" (populaires + nouveaux prioritaires)
+export async function trierPopulairesEtRecents(items, elementType) {
+  if (!items || items.length === 0) return [];
+  const ids = items.map(i => i.id);
+  const vuesMap = await getVuesMap(ids, elementType);
+
+  return [...items]
+    .map(item => ({
+      ...item,
+      _score: calculerScore(item, vuesMap[item.id]),
+      _vues: vuesMap[item.id] || 0
+    }))
+    .sort((a, b) => {
+      // Tri principal : score décroissant
+      if (b._score !== a._score) return b._score - a._score;
+      // Tiebreak : created_at décroissant (plus récent en premier)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+}
+
+// Helper: génère un slug unique en ajoutant un suffixe si nécessaire
+async function generateUniqueSlug(nom, excludeId = null) {
+  const baseSlug = generateSlug(nom);
+  if (!baseSlug) return null;
+
+  let slug = baseSlug;
+  let i = 2;
+  while (true) {
+    let query = supabase.from('structures').select('id').eq('slug', slug);
+    if (excludeId) query = query.neq('id', excludeId);
+    const { data } = await query.maybeSingle();
+    if (!data) break; // slug disponible
+    slug = `${baseSlug}-${i}`;
+    i++;
+  }
+  return slug;
+}
 
 // ============================================
 // STRUCTURES API
@@ -41,26 +120,41 @@ export const structuresAPI = {
     return data || [];
   },
 
-  async getById(id) {
+  async getById(idOrSlug) {
+    const selectFields = `
+      *,
+      pays:pays_id(id, nom, devise),
+      ville:ville_id(id, nom),
+      categorie:categorie_id(id, nom, icon, color)
+    `;
+
+    // Si c'est un UUID → lookup direct par id
+    if (isUUID(idOrSlug)) {
+      const { data, error } = await supabase
+        .from('structures')
+        .select(selectFields)
+        .eq('id', idOrSlug)
+        .single();
+      if (error) throw error;
+      return data;
+    }
+
+    // Sinon → lookup par slug
     const { data, error } = await supabase
       .from('structures')
-      .select(`
-        *,
-        pays:pays_id(id, nom, devise),
-        ville:ville_id(id, nom),
-        categorie:categorie_id(id, nom, icon, color)
-      `)
-      .eq('id', id)
+      .select(selectFields)
+      .eq('slug', idOrSlug)
       .single();
-
     if (error) throw error;
     return data;
   },
 
   async create(structureData) {
+    // Génère le slug depuis le nom si pas fourni
+    const slug = structureData.slug || await generateUniqueSlug(structureData.nom);
     const { data, error } = await supabase
       .from('structures')
-      .insert([structureData])
+      .insert([{ ...structureData, slug }])
       .select()
       .single();
 
@@ -69,9 +163,14 @@ export const structuresAPI = {
   },
 
   async update(id, structureData) {
+    // Régénère le slug si le nom a changé et pas de slug explicite
+    let slug = structureData.slug;
+    if (!slug && structureData.nom) {
+      slug = await generateUniqueSlug(structureData.nom, id);
+    }
     const { data, error } = await supabase
       .from('structures')
-      .update(structureData)
+      .update({ ...structureData, ...(slug ? { slug } : {}) })
       .eq('id', id)
       .select()
       .single();

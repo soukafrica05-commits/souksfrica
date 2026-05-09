@@ -8,6 +8,7 @@ import { usePanier } from '@/hooks/usePanier'; // ✅ IMPORT HOOK
 import PanierFlottant from '@/components/PanierFlottant'; // ✅ IMPORT COMPOSANT
 import { supabase } from '@/lib/supabase'; // ✅ POUR ENREGISTRER COMMANDES
 import PageTracker from '@/components/PageTracker';
+import FeaturedProductsSection from '@/components/FeaturedProductsSection';
 
 
 export default function ProduitDetail() {
@@ -512,7 +513,7 @@ TOTAL: ${produit.prix * quantite} ${userCurrency}
         {produit.structure && (
           <div className="mt-8">
             <Link
-              href={`/structure/${produit.structure.id}`}
+              href={`/structure/${produit.structure.slug || produit.structure.id}`}
               className="btn-accent inline-flex items-center gap-2"
             >
               🏪 Voir tous les produits de {produit.structure.nom}
@@ -623,6 +624,9 @@ TOTAL: ${produit.prix * quantite} ${userCurrency}
           </div>
         </div>
       )}
+
+      {/* Produits à la une */}
+      <FeaturedProductsSection excludeId={produit?.id} limit={10} />
 
       {/* ✅ PANIER FLOTTANT GLOBAL */}
       <PanierFlottant />

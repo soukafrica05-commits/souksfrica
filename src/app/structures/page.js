@@ -3,13 +3,13 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { structuresAPI, categoriesAPI, paysAPI, villesAPI } from '@/lib/api';
+import { structuresAPI, categoriesAPI, paysAPI, villesAPI, trierPopulairesEtRecents } from '@/lib/api';
 import { supabase } from '@/lib/supabase';
 import StarRating from '@/components/ui/StarRating';
 
 import PageTracker from '@/components/PageTracker';
 
-const STRUCTURES_PAR_PAGE = 12;
+const STRUCTURES_PAR_PAGE = 30;
 const CATEGORIES_VISIBLES = 5;
 
 function StructuresContent() {
@@ -98,8 +98,7 @@ function StructuresContent() {
       .lte('date_debut', now)
       .or(`date_fin.is.null,date_fin.gte.${now}`)
       .or('position.eq.listing,position.eq.tous')
-      .order('ordre', { ascending: true })
-      .limit(6);
+      .order('ordre', { ascending: true });
 
     if (misesError) throw misesError;
 
@@ -141,7 +140,9 @@ function StructuresContent() {
         chargerStructuresFeatured()
       ]);
 
-      setStructures(structuresData);
+      // Tri intelligent : les plus visités + bonus pour les nouveaux
+      const structuresTriees = await trierPopulairesEtRecents(structuresData, 'structure');
+      setStructures(structuresTriees);
       setCategories(categoriesData);
       setRegions(regionsData);
 
@@ -380,7 +381,7 @@ function StructuresContent() {
                 {structuresFeatured.map(structure => (
                   <Link
                     key={structure.id}
-                    href={`/structure/${structure.id}`}
+                    href={`/structure/${structure.slug || structure.id}`}
                     className="flex-shrink-0 w-60 snap-start group"
                   >
                     <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:scale-105 h-full">
@@ -467,13 +468,13 @@ function StructuresContent() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {structuresPage.map(structure => {
                 const categorie = categories.find(c => c.id === structure.categorie_id);
                 return (
-                  <Link 
-                    key={structure.id} 
-                    href={`/structure/${structure.id}`}
+                  <Link
+                    key={structure.id}
+                    href={`/structure/${structure.slug || structure.id}`}
                     className="card overflow-hidden hover:shadow-2xl transition-all hover:scale-105 cursor-pointer"
                   >
                     <div className="relative">
