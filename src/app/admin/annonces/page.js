@@ -156,7 +156,17 @@ export default function AdminAnnonces() {
     try {
       const dataToSend = {
         ...formData,
-        sous_type: formData.type === 'Emploi' ? formData.sous_type : null // ← NOUVEAU
+        // Champs UUID : "" → null pour éviter l'erreur Supabase "invalid input syntax for type uuid"
+        pays_id: formData.pays_id || null,
+        ville_id: formData.ville_id || null,
+        // Champs dates optionnels : "" → null
+        date_debut: formData.date_debut || null,
+        date_fin: formData.date_fin || null,
+        // Champs texte optionnels : "" → null
+        sous_type: formData.type === 'Emploi' ? formData.sous_type : null,
+        telephone: formData.telephone || null,
+        lien_externe: formData.lien_externe || null,
+        description_longue: formData.description_longue || null,
       };
 
       if (annonceEnCours) {
